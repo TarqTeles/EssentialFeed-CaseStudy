@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		960516B02901CABC0069FEE2 /* FeedCacheUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960516AF2901CABC0069FEE2 /* FeedCacheUseCaseTests.swift */; };
 		96150CD228F5BA360080A0B4 /* URLSessionHTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96150CD128F5BA360080A0B4 /* URLSessionHTTPClientTests.swift */; };
 		9616A9B128F8587000DD758E /* XCTextCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964A0D4A28F75BBE00D36820 /* XCTextCase+MemoryLeakTracking.swift */; };
 		964A0D4B28F75BBE00D36820 /* XCTextCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964A0D4A28F75BBE00D36820 /* XCTextCase+MemoryLeakTracking.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		960516AF2901CABC0069FEE2 /* FeedCacheUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCacheUseCaseTests.swift; sourceTree = "<group>"; };
 		96150CD128F5BA360080A0B4 /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
 		964A0D4A28F75BBE00D36820 /* XCTextCase+MemoryLeakTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTextCase+MemoryLeakTracking.swift"; sourceTree = "<group>"; };
 		964A0D4C28F774CA00D36820 /* URLSessionHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClient.swift; sourceTree = "<group>"; };
@@ -88,6 +90,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		960516AE2901CA940069FEE2 /* Feed Cache */ = {
+			isa = PBXGroup;
+			children = (
+				960516AF2901CABC0069FEE2 /* FeedCacheUseCaseTests.swift */,
+			);
+			path = "Feed Cache";
+			sourceTree = "<group>";
+		};
 		964A0D4928F75B7600D36820 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +160,7 @@
 				9698612F28ED9DCF00BFD69B /* EssentialFeedTests.swift */,
 				964A0D4928F75B7600D36820 /* Helpers */,
 				969325EC28F468FA00849DAF /* Feed API */,
+				960516AE2901CA940069FEE2 /* Feed Cache */,
 			);
 			path = EssentialFeedTests;
 			sourceTree = "<group>";
@@ -336,6 +347,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9698614328EDB36A00BFD69B /* LoadFeedFromRemoteUseCaseTests.swift in Sources */,
+				960516B02901CABC0069FEE2 /* FeedCacheUseCaseTests.swift in Sources */,
 				96150CD228F5BA360080A0B4 /* URLSessionHTTPClientTests.swift in Sources */,
 				964A0D4B28F75BBE00D36820 /* XCTextCase+MemoryLeakTracking.swift in Sources */,
 				9698613028ED9DCF00BFD69B /* EssentialFeedTests.swift in Sources */,
