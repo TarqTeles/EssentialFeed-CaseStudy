@@ -67,15 +67,15 @@ class CodableFeedStoreTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        try? FileManager.default.removeItem(at: testSpecificStoreURL())
+        setupEmptyStoreState()
     }
-
+    
     override func tearDown() {
         super.tearDown()
         
-        try? FileManager.default.removeItem(at: testSpecificStoreURL())
+        undoStoreSideEffects()
     }
-    
+
     func test_retrieve_deliversEmptyOnEmptyCache() {
         let sut = makeSUT()
         let exp = expectation(description: "Wait for cache retrieval")
@@ -150,6 +150,17 @@ class CodableFeedStoreTests: XCTestCase {
         return sut
     }
     
+    private func setupEmptyStoreState() {
+        deleteTestStoreArtifacts()
+    }
+
+    private func undoStoreSideEffects() {
+        deleteTestStoreArtifacts()
+    }
+
+    private func deleteTestStoreArtifacts() {
+        try? FileManager.default.removeItem(at: testSpecificStoreURL())
+    }
     private func testSpecificStoreURL() -> URL {
         return FileManager.default.temporaryDirectory.appendingPathComponent("\(type(of: self)).store")
     }
