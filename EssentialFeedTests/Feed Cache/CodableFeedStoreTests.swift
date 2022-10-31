@@ -52,8 +52,8 @@ class CodableFeedStore {
     func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping FeedStore.InsertionCompletion) {
         let encoder = JSONEncoder()
         let cache = Cache(feed: feed.map(CodableFeedImage.init), timestamp: timestamp)
-        let data = try! encoder.encode(cache)
-        try! data.write(to: storeURL)
+        let encoded = try! encoder.encode(cache)
+        try! encoded.write(to: storeURL)
         completion(nil)
     }
 }
@@ -125,8 +125,8 @@ class CodableFeedStoreTests: XCTestCase {
             sut.retrieve { retrievalResult in
                 switch retrievalResult {
                     case let .found(feed: receivedFeed, timestamp: receivedTimestamp):
-                        XCTAssertEqual(feed, receivedFeed)
-                        XCTAssertEqual(timestamp, receivedTimestamp)
+                        XCTAssertEqual(receivedFeed, feed)
+                        XCTAssertEqual(receivedTimestamp, timestamp)
                         
                     default:
                         XCTFail("Expected found result with feed \(feed) and timestamp,\(timestamp), got \(retrievalResult) instead")
@@ -140,8 +140,9 @@ class CodableFeedStoreTests: XCTestCase {
     
     // MARK: - Helpers
     
-    private func makeSUT() -> CodableFeedStore {
+    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> CodableFeedStore {
         let sut = CodableFeedStore()
+        trackForMemoryLeaks(sut, file: file, line: line)
 
         return sut
     }
