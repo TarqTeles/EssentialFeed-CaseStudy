@@ -123,6 +123,20 @@ extension FeedStoreSpecs where Self: XCTestCase {
         XCTAssertEqual(completedOperationsInOrder, [op1, op2, op3], "Expected side-effects to run serially but operations finished in the wrong order")
     }
     
+    func assertThatRetrieveDeliversFailureOnRetrievalError(_ sut: FeedStore, file: StaticString = #filePath, line: UInt = #line) {
+        expect(sut, toRetrieve: .failure(anyNSError()))
+    }
+    
+    func assertThatRetrieveHasNoSideEffectsOnFailure(_ sut: FeedStore, file: StaticString = #filePath, line: UInt = #line) {
+        expect(sut, toRetrieveTwice: .failure(anyNSError()))
+    }
+    
+    func assertThatInsert(_ sut: FeedStore, file: StaticString = #filePath, line: UInt = #line) {
+    }
+    
+    func assertThatDelete(_ sut: FeedStore, file: StaticString = #filePath, line: UInt = #line) {
+    }
+    
     func expect(_ sut: FeedStore, toRetrieveTwice expectedResult: RetrieveCachedFeedResult, file: StaticString = #filePath, line: UInt = #line) {
         expect(sut, toRetrieve: expectedResult, file: file, line: line)
         expect(sut, toRetrieve: expectedResult, file: file, line: line)
