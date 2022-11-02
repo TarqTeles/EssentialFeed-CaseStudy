@@ -149,7 +149,16 @@ extension FeedStoreSpecs where Self: XCTestCase {
         expect(sut, toRetrieve: .empty)
     }
     
-    func assertThatDelete(_ sut: FeedStore, file: StaticString = #filePath, line: UInt = #line) {
+    func assertThatDeleteDeliversErrorOnDeletionError(_ sut: FeedStore, file: StaticString = #filePath, line: UInt = #line) {
+        let deletionError = deleteCache(from: sut)
+        
+        XCTAssertNotNil(deletionError, "Expected cache deletion to fail")
+    }
+    
+    func assertThatDeleteHasNoSideEffectsOnDeletionError(_ sut: FeedStore, file: StaticString = #filePath, line: UInt = #line) {
+        deleteCache(from: sut)
+        
+        expect(sut, toRetrieve: .empty)
     }
     
     func expect(_ sut: FeedStore, toRetrieveTwice expectedResult: RetrieveCachedFeedResult, file: StaticString = #filePath, line: UInt = #line) {
