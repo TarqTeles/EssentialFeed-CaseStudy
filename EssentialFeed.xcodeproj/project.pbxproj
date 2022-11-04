@@ -194,14 +194,30 @@
 		96885E29291552780078D997 /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				96885E2C2915783D0078D997 /* Codable */,
+				96885E2D291578690078D997 /* CoreData */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		96885E2C2915783D0078D997 /* Codable */ = {
+			isa = PBXGroup;
+			children = (
 				96BE668F29115ACA00EF691E /* CodableFeedStore.swift */,
+			);
+			path = Codable;
+			sourceTree = "<group>";
+		};
+		96885E2D291578690078D997 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
 				96EC632A29148536006C7104 /* CoreDataFeedStore.swift */,
 				96885E2A291553310078D997 /* CoreDataHelpers.swift */,
 				96885E2729154DFD0078D997 /* ManagedFeedImage.swift */,
 				96885E2529154DC30078D997 /* ManagedCache.swift */,
 				961D41B22914325C0045F886 /* FeedStore.xcdatamodeld */,
 			);
-			path = Infrastructure;
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		969325EC28F468FA00849DAF /* Feed API */ = {
