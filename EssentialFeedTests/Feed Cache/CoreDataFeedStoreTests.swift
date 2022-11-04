@@ -43,11 +43,12 @@ class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs {
         let sut = makeSUT()
         
         assertThatInsertDeliverNoErrorOnNonEmptyCache(sut)
-
     }
     
     func test_insert_overridesPreviouslyInsertedCacheValues() {
-
+        let sut = makeSUT()
+        
+        assertThatInsertOverridesPreviouslyInsertedCacheValues(sut)
     }
     
     func test_delete_hasNoSideEffectsOnEmptyCache() {
