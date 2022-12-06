@@ -185,6 +185,29 @@ class FeedViewControllerTests: XCTestCase {
         XCTAssertEqual(view0?.isShowingRetryAction, true, "Expect  visible retry action once loading image completes with invalid data")
     }
 
+    func test_feedImageViewRetruButton_retriesImageLoad() {
+        let image0 = makeImage(url: URL(string: "https://url-0.com")!)
+        let image1 = makeImage(url: URL(string: "https://url-1.com")!)
+        let (sut, loader) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        loader.completeFeedLoading(with: [image0, image1])
+        
+        let view0 = sut.simulateFeedImageViewVisible(at: 0)
+        let view1 = sut.simulateFeedImageViewVisible(at: 1)
+        XCTAssertEqual(loader.loadedImageURLs, [image0.url, image1.url], "Expected two image URL requests for the two visible views")
+        
+        loader.completeFeedLoadingWithError(at: 0)
+        loader.completeFeedLoadingWithError(at: 0)
+        XCTAssertEqual(loader.loadedImageURLs, [image0.url, image1.url], "Expected two image URL requests before retry action")
+        
+        view0?.simulateRetryAction()
+        XCTAssertEqual(loader.loadedImageURLs, [image0.url, image1.url, image0.url], "Expected third image URL request after first view retry")
+        
+        view1?.simulateRetryAction()
+        XCTAssertEqual(loader.loadedImageURLs, [image0.url, image1.url, image0.url, image1.url], "Expected fourth image URL request after second view retry")
+    }
+    
     // MARK: - Helpers
 
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: FeedViewController, loader: LoaderSpy) {
@@ -317,6 +340,9 @@ private extension FeedViewController {
 }
 
 private extension FeedImageCell {
+    func simulateRetryAction() {
+        feedImageRetryButton.simulateTap()
+    }
     var isShowingLocation: Bool {
         !locationContainer.isHidden
     }
@@ -328,6 +354,7 @@ private extension FeedImageCell {
     var isShowingRetryAction: Bool {
         !feedImageRetryButton.isHidden
     }
+    
     var locationText: String? {
         locationLabel.text
     }
@@ -338,6 +365,16 @@ private extension FeedImageCell {
     
     var renderedImage: Data? {
         feedImageView.image?.pngData()
+    }
+}
+
+private extension UIButton {
+    func simulateTap() {
+        allTargets.forEach { target in
+            actions(forTarget: target, forControlEvent: .touchUpInside)?.forEach {
+                (target as NSObject).perform(Selector($0))
+            }
+        }
     }
 }
 
