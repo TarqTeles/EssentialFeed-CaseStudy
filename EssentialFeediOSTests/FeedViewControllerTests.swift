@@ -128,6 +128,28 @@ class FeedViewControllerTests: XCTestCase {
         XCTAssertEqual(view1?.isShowingLoadingIndicator, false, "Expect no loading indicator for second view once loading completes with error image")
     }
     
+    func test_feedImageView_rendersImageLoadedFromURL() {
+        let (sut, loader) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        loader.completeFeedLoading(with: [makeImage(), makeImage()])
+        
+        let view0 = sut.simulateFeedImageViewVisible(at: 0)
+        let view1 = sut.simulateFeedImageViewVisible(at: 1)
+        XCTAssertEqual(view0?.renderedImage, .none, "Expect no image for first view while loading first image")
+        XCTAssertEqual(view1?.renderedImage, .none, "Expect no image for second view while loading second image")
+
+        let imageData0 = UIImage.make(withColor: .red).pngData()!
+        loader.completeImageLoading(with: imageData0, at: 0)
+        XCTAssertEqual(view0?.renderedImage, imageData0, "Expect image for first view once loading first image completes successfully")
+        XCTAssertEqual(view1?.renderedImage, .none, "Expect loading indicator for second view to continue once loading first image")
+
+        let imageData1 = UIImage.make(withColor: .blue).pngData()!
+        loader.completeImageLoading(with: imageData1, at: 1)
+        XCTAssertEqual(view0?.renderedImage, imageData0, "Expect no image change for first view once loading second image completes with error")
+        XCTAssertEqual(view1?.renderedImage, imageData1, "Expect no image still for second view once loading completes with error image")
+    }
+    
     // MARK: - Helpers
 
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: FeedViewController, loader: LoaderSpy) {
@@ -271,8 +293,13 @@ private extension FeedImageCell {
     var locationText: String? {
         locationLabel.text
     }
+    
     var descriptionText: String? {
         descriptionLabel.text
+    }
+    
+    var renderedImage: Data? {
+        feedImageView.image?.pngData()
     }
 }
 
@@ -282,6 +309,19 @@ private extension UIRefreshControl {
             actions(forTarget: target, forControlEvent: .valueChanged)?.forEach {
                 (target as NSObject).perform(Selector($0))
             }
+        }
+    }
+}
+
+private extension UIImage {
+    static func make(withColor color: UIColor) -> UIImage {
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        
+        return UIGraphicsImageRenderer(size: rect.size, format: format).image { rendererContext in
+            color.setFill()
+            rendererContext.fill(rect)
         }
     }
 }
