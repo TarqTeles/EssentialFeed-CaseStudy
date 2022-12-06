@@ -87,6 +87,10 @@ public class FeedViewController: UITableViewController, UITableViewDataSourcePre
         cancelTask(forRowAt: indexPath)
     }
     
+    public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // if image is still nil (load was cancelled before finishing, then load again
+    }
+    
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
             let cellModel = tableModel[indexPath.row]
