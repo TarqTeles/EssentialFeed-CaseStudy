@@ -150,6 +150,27 @@ class FeedViewControllerTests: XCTestCase {
         XCTAssertEqual(view1?.renderedImage, imageData1, "Expect no image still for second view once loading completes with error image")
     }
     
+    func test_feedImageViewRetryButton_isVisibleOnImageURLLoadError() {
+        let (sut, loader) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        loader.completeFeedLoading(with: [makeImage(), makeImage()])
+        
+        let view0 = sut.simulateFeedImageViewVisible(at: 0)
+        let view1 = sut.simulateFeedImageViewVisible(at: 1)
+        XCTAssertEqual(view0?.isShowingRetryAction, false, "Expect no visible retry action for first view while loading first image")
+        XCTAssertEqual(view1?.isShowingRetryAction, false, "Expect no visible retry action for second view while loading second image")
+
+        let imageData0 = UIImage.make(withColor: .red).pngData()!
+        loader.completeImageLoading(with: imageData0, at: 0)
+        XCTAssertEqual(view0?.isShowingRetryAction, false, "Expect no visible retry action for first view once loading first image completes successfully")
+        XCTAssertEqual(view1?.isShowingRetryAction, false, "Expect no visible retry action for second view to continue once loading first image")
+
+        loader.completeImageLoadingWithError(at: 1)
+        XCTAssertEqual(view0?.isShowingRetryAction, false, "Expect no retry action state change for first view once loading second image completes with error")
+        XCTAssertEqual(view1?.isShowingRetryAction, true, "Expect visible retry action for second view once loading completes with error image")
+    }
+
     // MARK: - Helpers
 
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: FeedViewController, loader: LoaderSpy) {
@@ -290,6 +311,9 @@ private extension FeedImageCell {
         feedImageContainer.isShimmering
     }
     
+    var isShowingRetryAction: Bool {
+        !feedImageRetryButton.isHidden
+    }
     var locationText: String? {
         locationLabel.text
     }
