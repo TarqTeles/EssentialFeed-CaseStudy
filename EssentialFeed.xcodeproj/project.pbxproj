@@ -54,6 +54,10 @@
 		96A46BCB29193F1500FF7F0E /* SharedTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9689E456290ACEB50079FF5E /* SharedTestHelpers.swift */; };
 		96A9E2E4293F9FC200BC9991 /* UIKit+Shimmering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A9E2E3293F9FC200BC9991 /* UIKit+Shimmering.swift */; };
 		96C19640296702E800FCA571 /* FeedImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C1963F296702E800FCA571 /* FeedImageDataLoader.swift */; };
+		96C196422967051C00FCA571 /* UIButton+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C196412967051C00FCA571 /* UIButton+TestHelpers.swift */; };
+		96C196442967057C00FCA571 /* UIControl+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C196432967057C00FCA571 /* UIControl+TestHelpers.swift */; };
+		96C19646296705BF00FCA571 /* UIImage+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C19645296705BF00FCA571 /* UIImage+TestHelpers.swift */; };
+		96C19648296705F800FCA571 /* UIRefreshControl+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C19647296705F800FCA571 /* UIRefreshControl+TestHelpers.swift */; };
 		96EC632B29148536006C7104 /* CoreDataFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EC632A29148536006C7104 /* CoreDataFeedStore.swift */; };
 		96F8E631292FF23E00767D2E /* EssentialFeediOS.docc in Sources */ = {isa = PBXBuildFile; fileRef = 96F8E630292FF23E00767D2E /* EssentialFeediOS.docc */; };
 		96F8E637292FF23E00767D2E /* EssentialFeediOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F8E62D292FF23E00767D2E /* EssentialFeediOS.framework */; };
@@ -153,6 +157,10 @@
 		96A46BBF2919347B00FF7F0E /* EssentialFeedCacheIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EssentialFeedCacheIntegrationTests.swift; sourceTree = "<group>"; };
 		96A9E2E3293F9FC200BC9991 /* UIKit+Shimmering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Shimmering.swift"; sourceTree = "<group>"; };
 		96C1963F296702E800FCA571 /* FeedImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataLoader.swift; sourceTree = "<group>"; };
+		96C196412967051C00FCA571 /* UIButton+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+TestHelpers.swift"; sourceTree = "<group>"; };
+		96C196432967057C00FCA571 /* UIControl+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+TestHelpers.swift"; sourceTree = "<group>"; };
+		96C19645296705BF00FCA571 /* UIImage+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+TestHelpers.swift"; sourceTree = "<group>"; };
+		96C19647296705F800FCA571 /* UIRefreshControl+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+TestHelpers.swift"; sourceTree = "<group>"; };
 		96EC632A29148536006C7104 /* CoreDataFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedStore.swift; sourceTree = "<group>"; };
 		96F8E62D292FF23E00767D2E /* EssentialFeediOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EssentialFeediOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96F8E630292FF23E00767D2E /* EssentialFeediOS.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = EssentialFeediOS.docc; sourceTree = "<group>"; };
@@ -388,6 +396,10 @@
 		96D734B52948E1C500915235 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				96C196412967051C00FCA571 /* UIButton+TestHelpers.swift */,
+				96C196432967057C00FCA571 /* UIControl+TestHelpers.swift */,
+				96C19645296705BF00FCA571 /* UIImage+TestHelpers.swift */,
+				96C19647296705F800FCA571 /* UIRefreshControl+TestHelpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -781,7 +793,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				9680911C293114A500D636CB /* FeedViewControllerTests.swift in Sources */,
+				96C19648296705F800FCA571 /* UIRefreshControl+TestHelpers.swift in Sources */,
 				9680912329313D5E00D636CB /* XCTestCase+MemoryLeakTracking.swift in Sources */,
+				96C196422967051C00FCA571 /* UIButton+TestHelpers.swift in Sources */,
+				96C19646296705BF00FCA571 /* UIImage+TestHelpers.swift in Sources */,
+				96C196442967057C00FCA571 /* UIControl+TestHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

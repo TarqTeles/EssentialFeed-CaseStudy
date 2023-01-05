@@ -413,38 +413,3 @@ private extension FeedImageCell {
         feedImageView.image?.pngData()
     }
 }
-
-private extension UIButton {
-    func simulateTap() {
-        simulate(event: .touchUpInside)
-    }
-}
-
-private extension UIRefreshControl {
-    func simulatePullToRefresh() {
-        simulate(event: .valueChanged)
-    }
-}
-
-private extension UIControl {
-    func simulate(event: UIControl.Event) {
-        allTargets.forEach { target in
-            actions(forTarget: target, forControlEvent: event)?.forEach {
-                (target as NSObject).perform(Selector($0))
-            }
-        }
-    }
-}
-
-private extension UIImage {
-    static func make(withColor color: UIColor) -> UIImage {
-        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
-        let format = UIGraphicsImageRendererFormat()
-        format.scale = 1
-        
-        return UIGraphicsImageRenderer(size: rect.size, format: format).image { rendererContext in
-            color.setFill()
-            rendererContext.fill(rect)
-        }
-    }
-}
