@@ -20,6 +20,7 @@ extension FeedViewControllerTests {
             assertThat(sut, hasViewConfiguredFor: image, at: index, file: file, line: line)
         }
     }
+    
     func assertThat(_ sut: FeedViewController, hasViewConfiguredFor image: FeedImage, at index: Int, file: StaticString = #filePath, line: UInt = #line) {
         let view = sut.feedImageView(at: index)
         
