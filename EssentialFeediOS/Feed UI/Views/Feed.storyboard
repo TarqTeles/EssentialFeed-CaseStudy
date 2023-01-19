@@ -126,6 +126,7 @@
                         <connections>
                             <outlet property="dataSource" destination="3q8-nx-aub" id="5SB-vn-Lga"/>
                             <outlet property="delegate" destination="3q8-nx-aub" id="mro-tV-rKi"/>
+                            <outlet property="prefetchDataSource" destination="3q8-nx-aub" id="aGE-65-VTV"/>
                         </connections>
                     </tableView>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="4Ed-UD-ub0">
