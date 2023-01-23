@@ -80,6 +80,7 @@
 		96F8E631292FF23E00767D2E /* EssentialFeediOS.docc in Sources */ = {isa = PBXBuildFile; fileRef = 96F8E630292FF23E00767D2E /* EssentialFeediOS.docc */; };
 		96F8E637292FF23E00767D2E /* EssentialFeediOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F8E62D292FF23E00767D2E /* EssentialFeediOS.framework */; };
 		96F97152297F1C32002C61C4 /* MainThreadDispatchDecoratorMainThreadDispatchDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F97151297F1C32002C61C4 /* MainThreadDispatchDecoratorMainThreadDispatchDecorator.swift */; };
+		96F97154297F1C95002C61C4 /* WeakRefVirtualProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F97153297F1C95002C61C4 /* WeakRefVirtualProxy.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -204,6 +205,7 @@
 		96F8E630292FF23E00767D2E /* EssentialFeediOS.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = EssentialFeediOS.docc; sourceTree = "<group>"; };
 		96F8E636292FF23E00767D2E /* EssentialFeediOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeediOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96F97151297F1C32002C61C4 /* MainThreadDispatchDecoratorMainThreadDispatchDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainThreadDispatchDecoratorMainThreadDispatchDecorator.swift; sourceTree = "<group>"; };
+		96F97153297F1C95002C61C4 /* WeakRefVirtualProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakRefVirtualProxy.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -484,6 +486,7 @@
 			children = (
 				9680912429314EE600D636CB /* FeedViewController.swift */,
 				96C1965329674DF800FCA571 /* FeedImageCellController.swift */,
+				96F97153297F1C95002C61C4 /* WeakRefVirtualProxy.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -852,6 +855,7 @@
 			files = (
 				96C19640296702E800FCA571 /* FeedImageDataLoader.swift in Sources */,
 				96C196562967594E00FCA571 /* FeedUIComposer.swift in Sources */,
+				96F97154297F1C95002C61C4 /* WeakRefVirtualProxy.swift in Sources */,
 				9680912529314EE600D636CB /* FeedViewController.swift in Sources */,
 				96C708ED29718A73004374CA /* FeedPresenter.swift in Sources */,
 				96A02E022979C15600855F88 /* UITableView+Dequeueing.swift in Sources */,
