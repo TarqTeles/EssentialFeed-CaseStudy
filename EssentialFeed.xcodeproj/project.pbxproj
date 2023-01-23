@@ -83,6 +83,7 @@
 		96F97154297F1C95002C61C4 /* WeakRefVirtualProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F97153297F1C95002C61C4 /* WeakRefVirtualProxy.swift */; };
 		96F97156297F1CFF002C61C4 /* FeedViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F97155297F1CFF002C61C4 /* FeedViewAdapter.swift */; };
 		96F97158297F1D91002C61C4 /* FeedLoaderPresenterAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F97157297F1D91002C61C4 /* FeedLoaderPresenterAdapter.swift */; };
+		96F9715A297F1E13002C61C4 /* FeedImageLoaderPresentationAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F97159297F1E13002C61C4 /* FeedImageLoaderPresentationAdapter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -210,6 +211,7 @@
 		96F97153297F1C95002C61C4 /* WeakRefVirtualProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakRefVirtualProxy.swift; sourceTree = "<group>"; };
 		96F97155297F1CFF002C61C4 /* FeedViewAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewAdapter.swift; sourceTree = "<group>"; };
 		96F97157297F1D91002C61C4 /* FeedLoaderPresenterAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderPresenterAdapter.swift; sourceTree = "<group>"; };
+		96F97159297F1E13002C61C4 /* FeedImageLoaderPresentationAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageLoaderPresentationAdapter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -498,6 +500,7 @@
 			isa = PBXGroup;
 			children = (
 				96C196552967594E00FCA571 /* FeedUIComposer.swift */,
+				96F97159297F1E13002C61C4 /* FeedImageLoaderPresentationAdapter.swift */,
 				96F97157297F1D91002C61C4 /* FeedLoaderPresenterAdapter.swift */,
 				96F97155297F1CFF002C61C4 /* FeedViewAdapter.swift */,
 				96F97151297F1C32002C61C4 /* MainThreadDispatchDecoratorMainThreadDispatchDecorator.swift */,
@@ -867,6 +870,7 @@
 				96A02E022979C15600855F88 /* UITableView+Dequeueing.swift in Sources */,
 				968F1936296E023900628A00 /* FeedImageViewModel.swift in Sources */,
 				96C708EF2971CD31004374CA /* FeedImagePresenter.swift in Sources */,
+				96F9715A297F1E13002C61C4 /* FeedImageLoaderPresentationAdapter.swift in Sources */,
 				96A02E042979C3C600855F88 /* UIImageView+Animations.swift in Sources */,
 				96C708F12971DFC3004374CA /* FeedLoadingViewModel.swift in Sources */,
 				96C1965429674DF800FCA571 /* FeedImageCellController.swift in Sources */,
