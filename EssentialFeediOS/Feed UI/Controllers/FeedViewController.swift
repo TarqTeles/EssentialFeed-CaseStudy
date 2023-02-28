@@ -11,14 +11,10 @@ protocol FeedViewControllerDelegate {
     func didRequestFeedRefresh()
 }
 
-public final class ErrorView: UIView {
-    public var message: String?
-}
-
 public class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, FeedLoadingView, FeedErrorView {
     var delegate: FeedViewControllerDelegate?
 
-    public let errorView = ErrorView()
+    @IBOutlet public private(set) var errorView: ErrorView?
     
     var tableModel = [FeedImageCellController]() {
         didSet { tableView.reloadData() }
@@ -43,7 +39,11 @@ public class FeedViewController: UITableViewController, UITableViewDataSourcePre
     }
     
     func display(_ viewModel: FeedErrorViewModel) {
-        errorView.message = viewModel.message
+        if let errorMessage = viewModel.message {
+            errorView?.show(message: errorMessage)
+        } else {
+            errorView?.hideMessage()
+        }
     }
 
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
