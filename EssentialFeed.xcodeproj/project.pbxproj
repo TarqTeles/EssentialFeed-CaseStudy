@@ -517,9 +517,7 @@
 			children = (
 				96566EFC293A7FFB00D9A0E1 /* FeedImageCell.swift */,
 				96E9E5D429AE831D007C2D2C /* ErrorView.swift */,
-				96A9E2E3293F9FC200BC9991 /* UIKit+Shimmering.swift */,
-				96A02E002979C0F600855F88 /* UITableView+Dequeueing.swift */,
-				96A02E032979C3C600855F88 /* UIImageView+Animations.swift */,
+				96E9E5D629AE853D007C2D2C /* Helpers */,
 				96037F622979825D008B07A3 /* Feed.storyboard */,
 				96A02DFE2979859200855F88 /* Feed.xcassets */,
 			);
@@ -538,6 +536,16 @@
 				96C1964D2967081000FCA571 /* FeedViewControllerTests+Assertions.swift */,
 				96C1964F296708E200FCA571 /* FeedViewControllerTests+LoaderSpy.swift */,
 				96A04C7F297B18EF009AEB9E /* FeedViewControllerTests+Localization.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		96E9E5D629AE853D007C2D2C /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				96A9E2E3293F9FC200BC9991 /* UIKit+Shimmering.swift */,
+				96A02E002979C0F600855F88 /* UITableView+Dequeueing.swift */,
+				96A02E032979C3C600855F88 /* UIImageView+Animations.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
