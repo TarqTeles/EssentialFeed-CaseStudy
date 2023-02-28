@@ -15,7 +15,7 @@ public final class FeedUIComposer {
         let presentationAdapter = FeedLoaderPresenterAdapter(feedLoader: MainThreadDispatchDecorator(decoratee: feedLoader))
         
         let feedController = makeFeedViewController(delegate: presentationAdapter,
-                                      title: FeedPresenter.title)
+                                                    title: Localized.Feed.title)
         
         let presenter = FeedPresenter(feedView: FeedViewAdapter(controller: feedController,
                                                                 loader: MainThreadDispatchDecorator(decoratee: imageLoader)),
