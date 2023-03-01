@@ -97,6 +97,19 @@ class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(sut.errorMessage, nil, "Expect no error messages after user initiated reload")
     }
     
+    func test_errprView_dismissErrorMessageOnTap() {
+        let (sut, loader) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        XCTAssertEqual(sut.errorMessage, nil, "Expect no error messages on load")
+        
+        loader.completeFeedLoadingWithError(at: 0)
+        XCTAssertEqual(sut.errorMessage, localized("FEED_VIEW_CONNECTION_ERROR"), "Expect feed load error message on load failure")
+
+        sut.simulateTapOnErrorMessage()
+        XCTAssertEqual(sut.errorMessage, nil, "Expect no error messages after user tapped on error message")
+    }
+    
     func test_feedImageView_loadsImageURLWhenVisible() {
         let image0 = makeImage(url: URL(string: "https://url-0.com")!)
         let image1 = makeImage(url: URL(string: "https://url-1.com")!)
