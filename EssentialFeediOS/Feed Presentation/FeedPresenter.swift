@@ -31,6 +31,10 @@ final class FeedPresenter {
         self.errorView = errorView
     }
     
+    static var title: String {
+        Localized.Feed.title
+    }
+    
     func didStartLoadingFeed() {
         errorView.display(.noError)
         loadingView.display(FeedLoadingViewModel(isLoading: true))
