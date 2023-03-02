@@ -6,76 +6,12 @@
 //
 
 import XCTest
-
 import EssentialFeed
-
-struct FeedLoadingViewModel {
-    let isLoading: Bool
-}
-
-protocol FeedLoadingView {
-    func display(_ viewModel: FeedLoadingViewModel)
-}
-
-struct FeedViewModel {
-    let feed: [FeedImage]
-}
-
-protocol FeedView {
-    func display(_ viewModel: FeedViewModel)
-}
-
-public struct FeedErrorViewModel {
-    let message: String?
-    
-    static var noError: FeedErrorViewModel {
-        FeedErrorViewModel(message: nil)
-    }
-    
-    static func error(message: String) -> FeedErrorViewModel {
-        FeedErrorViewModel(message: message)
-    }
-}
-
-protocol FeedErrorView {
-    func display(_ viewModel: FeedErrorViewModel)
-}
-
-final class FeedPresenter {
-    private let loadingView: FeedLoadingView
-    private let feedView: FeedView
-    private let errorView: FeedErrorView
-
-    init(feedView: FeedView, loadingView: FeedLoadingView, errorView: FeedErrorView) {
-        self.feedView = feedView
-        self.loadingView = loadingView
-        self.errorView = errorView
-    }
-    
-    static var title: String {
-        Localized.Feed.title
-    }
-    
-    func didStartLoadingFeed() {
-        errorView.display(.noError)
-        loadingView.display(FeedLoadingViewModel(isLoading: true))
-    }
-    
-    func didFinishLoadingFeed(with feed: [FeedImage]) {
-        feedView.display(FeedViewModel(feed: feed))
-        loadingView.display(FeedLoadingViewModel(isLoading: false))
-    }
-    
-    func didFinishLoadingFeed(with error: Error) {
-        errorView.display(.error(message: Localized.Feed.loadError))
-        loadingView.display(FeedLoadingViewModel(isLoading: false))
-    }
-}
 
 class FeedPresenterTests: XCTestCase {
     
     func test_title_isLocalized() {
-        XCTAssertEqual(FeedPresenter.title, Localized.Feed.title)
+        XCTAssertEqual(FeedPresenter.title, localized("FEED_VIEW_TITLE"))
     }
     
     func test_init_doesNotSendMessagesToViews() {
@@ -108,7 +44,7 @@ class FeedPresenterTests: XCTestCase {
         
         sut.didFinishLoadingFeed(with: anyNSError())
         
-        XCTAssertEqual(view.messages, [.display(errorMessage: Localized.Feed.loadError),
+        XCTAssertEqual(view.messages, [.display(errorMessage: localized("FEED_VIEW_CONNECTION_ERROR")),
                                        .display(isLoading: false)])
     }
     
