@@ -31,6 +31,10 @@ public struct FeedErrorViewModel {
     static var noError: FeedErrorViewModel {
         FeedErrorViewModel(message: nil)
     }
+    
+    static func error(message: String) -> FeedErrorViewModel {
+        FeedErrorViewModel(message: message)
+    }
 }
 
 protocol FeedErrorView {
@@ -55,6 +59,11 @@ final class FeedPresenter {
     
     func didFinishLoadingFeed(with feed: [FeedImage]) {
         feedView.display(FeedViewModel(feed: feed))
+        loadingView.display(FeedLoadingViewModel(isLoading: false))
+    }
+    
+    func didFinishLoadingFeed(with error: Error) {
+        errorView.display(.error(message: Localized.Feed.loadError))
         loadingView.display(FeedLoadingViewModel(isLoading: false))
     }
 }
@@ -86,6 +95,15 @@ class FeedPresenterTests: XCTestCase {
                                        .display(isLoading: false)])
     }
     
+    func test_didFinishLoadingFeedWithError_displaysLocalizedErrorMessageAndStopsLoading() {
+        let (sut, view) = makeSUT()
+        
+        sut.didFinishLoadingFeed(with: anyNSError())
+        
+        XCTAssertEqual(view.messages, [.display(errorMessage: Localized.Feed.loadError),
+                                       .display(isLoading: false)])
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedPresenter, view: ViewSpy) {
@@ -96,6 +114,16 @@ class FeedPresenterTests: XCTestCase {
         return (sut, view)
     }
     
+    private func localized(_ key: String, file: StaticString = #filePath, line: UInt = #line) -> String {
+            let table = "Feed"
+            let bundle = Bundle(for: FeedPresenter.self)
+            let value = bundle.localizedString(forKey: key, value: nil, table: "Feed")
+            if value == key {
+                XCTFail("Missing localized string for key: \(key) in table: \(table)", file: file, line: line)
+            }
+            return value
+        }
+
     private class ViewSpy: FeedErrorView, FeedLoadingView, FeedView {
         enum Message: Hashable {
             case display(errorMessage: String?)
