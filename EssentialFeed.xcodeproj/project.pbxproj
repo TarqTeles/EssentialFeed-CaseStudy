@@ -147,6 +147,7 @@
 /* Begin PBXFileReference section */
 		96037F622979825D008B07A3 /* Feed.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Feed.storyboard; sourceTree = "<group>"; };
 		960516AF2901CABC0069FEE2 /* FeedCacheUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCacheUseCaseTests.swift; sourceTree = "<group>"; };
+		9609973C29B62AD1004695B5 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		96150CD128F5BA360080A0B4 /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
 		9616501B2905A6D50075E1C8 /* LocalFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedLoader.swift; sourceTree = "<group>"; };
 		9616501D2905A7040075E1C8 /* FeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStore.swift; sourceTree = "<group>"; };
@@ -377,6 +378,7 @@
 		9698611628ED9DCE00BFD69B = {
 			isa = PBXGroup;
 			children = (
+				9609973C29B62AD1004695B5 /* README.md */,
 				9698612228ED9DCE00BFD69B /* EssentialFeed */,
 				9698612E28ED9DCF00BFD69B /* EssentialFeedTests */,
 				965BC94F28F841940058A7EB /* EssentialFeedAPIEndToEndTests */,
