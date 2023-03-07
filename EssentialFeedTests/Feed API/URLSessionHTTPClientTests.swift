@@ -9,16 +9,10 @@ import XCTest
 import EssentialFeed
 
 class URLSessionHTTPClientTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-        
-        URLProtocolStub.startInterceptingRequests()
-    }
-    
     override func tearDown() {
         super.tearDown()
         
-        URLProtocolStub.stopInterceptingRequests()
+        URLProtocolStub.removeStub()
     }
     
     func test_getFromURL_performGETRequestWithURL() {
@@ -82,13 +76,14 @@ class URLSessionHTTPClientTests: XCTestCase {
         XCTAssertEqual(response.url, receivedValues?.response.url)
         XCTAssertEqual(response.statusCode, receivedValues?.response.statusCode)
     }
-    
-    // TODO: parei em https://github.com/essentialdevelopercom/essential-feed-case-study/pull/30/commits/081f8996591712b090e2afbb4850a105deee08ab
-    
+        
     //MARK: - Helper
     
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> HTTPClient {
-        let sut = URLSessionHTTPClient()
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [URLProtocolStub.self]
+        let session = URLSession(configuration: configuration)
+        let sut = URLSessionHTTPClient(session: session)
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
     }
@@ -171,13 +166,8 @@ class URLSessionHTTPClientTests: XCTestCase {
         static func observeRequest(observer: @escaping (URLRequest) -> Void) {
             stub = Stub(data: nil, response: nil, error: nil, requestObserver: observer)
         }
-        
-        static func startInterceptingRequests() {
-            URLProtocol.registerClass(URLProtocolStub.self)
-        }
-        
-        static func stopInterceptingRequests() {
-            URLProtocol.unregisterClass(URLProtocolStub.self)
+                
+        static func removeStub() {
             URLProtocolStub.stub = nil
         }
         
