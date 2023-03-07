@@ -1,5 +1,5 @@
 //
-//  EssentialFeed:EssentialFeed:Feed API:Helpers:HTTPURLResponse+StatusCode.swift
+//  HTTPURLResponse+StatusCode.swift
 //  EssentialFeed
 //
 //  Created by Tarquinio Teles on 07/03/23.
