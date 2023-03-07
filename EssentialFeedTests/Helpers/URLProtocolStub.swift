@@ -23,12 +23,16 @@ class URLProtocolStub: URLProtocol {
     
     private static let queue = DispatchQueue(label: "URLProtocolStub.queue")
     
-    static func stub(data: Data?, response: URLResponse?, error: Error?) {
-        stub = Stub(data: data, response: response, error: error, requestObserver: stub?.requestObserver)
+    static func stub(data: Data?, response: URLResponse?, error: Error?, keepingObserver: Bool) {
+        stub = Stub(data: data, response: response, error: error, requestObserver: keepingObserver ? stub?.requestObserver : nil)
     }
     
-    static func observeRequest(observer: @escaping (URLRequest) -> Void) {
-        stub = Stub(data: nil, response: nil, error: nil, requestObserver: observer)
+    static func observeRequest(observer: @escaping (URLRequest) -> Void, keepingStub: Bool = true) {
+        if keepingStub {
+            stub = Stub(data: stub?.data, response: stub?.response, error: stub?.error, requestObserver: observer)
+        } else {
+            stub = Stub(data: nil, response: nil, error: nil, requestObserver: observer)
+        }
     }
     
     static func removeStub() {

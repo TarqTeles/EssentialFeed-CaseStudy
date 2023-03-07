@@ -33,7 +33,7 @@ class URLSessionHTTPClientTests: XCTestCase {
     
     func test_cancelGetFromURLTask_cancelsURLRequest() {
         let exp = expectation(description: "Wait for request")
-        URLProtocolStub.observeRequest(observer: {_ in exp.fulfill() })
+        URLProtocolStub.observeRequest {_ in exp.fulfill() }
         
         let receivedError = resultErrorFor((data: nil, response: nil, error: anyNSError()), taskHandler: { task in task.cancel() }) as NSError?
         wait(for: [exp], timeout: 1.0)
@@ -118,7 +118,7 @@ class URLSessionHTTPClientTests: XCTestCase {
     }
     
     private func resultFor(_ values: (data: Data?, response: URLResponse?, error: Error?)?, taskHandler: (HTTPClientTask) -> Void = {_ in }, file: StaticString = #filePath, line: UInt = #line) -> HTTPClient.Result {
-        values.map { URLProtocolStub.stub(data: $0, response: $1, error: $2) }
+        values.map { URLProtocolStub.stub(data: $0, response: $1, error: $2, keepingObserver: true) }
         let sut = makeSUT(file: file, line: line)
         let exp = expectation(description: "Wait for completion")
         
