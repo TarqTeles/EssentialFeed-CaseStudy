@@ -33,8 +33,11 @@ final class LocalFeedImageDataLoader: FeedImageDataLoader {
     func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> EssentialFeed.FeedImageDataLoaderTask {
         store.retrieve(dataForURL: url) { result in
             completion(result
-                .mapError({ _ in Error.failed })
-                .flatMap({ _ in .failure(Error.notFound) }))
+                .mapError { _ in Error.failed }
+                .flatMap { data in
+                    data.map { .success($0) } ?? .failure(Error.notFound)
+                }
+            )
         }
         return Task()
     }
@@ -83,6 +86,15 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
         })
     }
     
+    func test_loadImageDataFromURL_deliverStoredDataOnFoundData() {
+        let (sut, store) = makeSUT()
+        let data = anyData()
+        
+        expect(sut, toCompleteWith: .success(data), when: {
+            store.complete(with: data)
+        })
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #file, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: StoreSpy) {
@@ -101,8 +113,11 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
                 case let (.failure(receivedError as LocalFeedImageDataLoader.Error), .failure(expectedError as LocalFeedImageDataLoader.Error)):
                     XCTAssertEqual(receivedError, expectedError, file: file, line: line)
                     
+                case let (.success(receivedData), .success(expectededData)):
+                    XCTAssertEqual(receivedData, expectededData, file: file, line: line)
+                    
                 default:
-                    XCTFail("Expected \(expectedResult), got \(receivedResult) instead")
+                    XCTFail("Expected \(expectedResult), got \(receivedResult) instead", file: file, line: line)
             }
             exp.fulfill()
         })
