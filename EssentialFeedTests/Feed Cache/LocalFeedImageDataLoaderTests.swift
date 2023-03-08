@@ -48,16 +48,16 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
     func test_loadImageDataFromURL_failsOnStoreError() {
         let (sut, store) = makeSUT()
         
-        expect(sut, toCompleteWith: failure(.failed), when: {
-            store.complete(with: anyNSError())
+        expect(sut, toCompleteWith: failed(), when: {
+            store.completeRetrieval(with: anyNSError())
         })
     }
     
     func test_loadImageDataFromURL_deliversNotFoundErrorOnNotFound() {
         let (sut, store) = makeSUT()
         
-        expect(sut, toCompleteWith: failure(.notFound), when: {
-            store.complete(with: .none)
+        expect(sut, toCompleteWith: notFound(), when: {
+            store.completeRetrieval(with: .none)
         })
     }
     
@@ -66,7 +66,7 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
         let foundData = anyData()
         
         expect(sut, toCompleteWith: .success(foundData), when: {
-            store.complete(with: foundData)
+            store.completeRetrieval(with: foundData)
         })
     }
     
@@ -81,9 +81,9 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
         
         task.cancel()
         
-        store.complete(with: foundData)
-        store.complete(with: .none)
-        store.complete(with: anyNSError())
+        store.completeRetrieval(with: foundData)
+        store.completeRetrieval(with: .none)
+        store.completeRetrieval(with: anyNSError())
         
         XCTAssertEqual(received.count, 0, "Expected no received results after cancelling task")
     }
@@ -99,7 +99,7 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
         
         sut = nil
         
-        store.complete(with: anyData())
+        store.completeRetrieval(with: anyData())
         
         XCTAssertEqual(received.count, 0, "Expected no received results after cancelling task")
     }
@@ -119,7 +119,7 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
         
         _ = sut.loadImageData(from: anyURL(), completion: { receivedResult in
             switch (receivedResult, expectedResult) {
-                case let (.failure(receivedError as LocalFeedImageDataLoader.Error), .failure(expectedError as LocalFeedImageDataLoader.Error)):
+                case let (.failure(receivedError as LocalFeedImageDataLoader.LoadError), .failure(expectedError as LocalFeedImageDataLoader.LoadError)):
                     XCTAssertEqual(receivedError, expectedError, file: file, line: line)
                     
                 case let (.success(receivedData), .success(expectededData)):
@@ -137,7 +137,15 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
 
     }
     
-    private func failure(_ error: LocalFeedImageDataLoader.Error) -> FeedImageDataLoader.Result {
+    private func failed() -> FeedImageDataLoader.Result {
+        return failure(.failed)
+    }
+    
+    private func notFound() -> FeedImageDataLoader.Result {
+        return failure(.notFound)
+    }
+    
+    private func failure(_ error: LocalFeedImageDataLoader.LoadError) -> FeedImageDataLoader.Result {
         return .failure(error)
     }
     
@@ -146,24 +154,26 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
             case insert(data: Data, for: URL)
             case retrieve(dataFor: URL)
         }
+        
         private(set) var receivedMessages = [Message]()
-        private var completions = [(FeedImageDataStore.Result) -> Void]()
+        
+        private var retrievalCompletions = [(FeedImageDataStore.RetrievalResult) -> Void]()
         
         func insert(_ data: Data, for url: URL, completion: @escaping (InsertionResult) -> Void) {
             receivedMessages.append(.insert(data: data, for: url))
         }
         
-        func retrieve(dataForURL url: URL, completion: @escaping (FeedImageDataStore.Result) -> Void) {
+        func retrieve(dataForURL url: URL, completion: @escaping (FeedImageDataStore.RetrievalResult) -> Void) {
             receivedMessages.append(.retrieve(dataFor: url))
-            completions.append(completion)
+            retrievalCompletions.append(completion)
         }
         
-        func complete(with error: Error, at index: Int = 0) {
-            completions[index](.failure(error))
+        func completeRetrieval(with error: Error, at index: Int = 0) {
+            retrievalCompletions[index](.failure(error))
         }
         
-        func complete(with data: Data?, at index: Int = 0) {
-            completions[index](.success(data))
+        func completeRetrieval(with data: Data?, at index: Int = 0) {
+            retrievalCompletions[index](.success(data))
         }
     }
 }
