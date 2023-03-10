@@ -101,6 +101,7 @@
 		96F97158297F1D91002C61C4 /* FeedLoaderPresenterAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F97157297F1D91002C61C4 /* FeedLoaderPresenterAdapter.swift */; };
 		96F9715A297F1E13002C61C4 /* FeedImageLoaderPresentationAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F97159297F1E13002C61C4 /* FeedImageLoaderPresentationAdapter.swift */; };
 		96FB991629BA25700050BFC2 /* CoreDataFeedImageDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FB991529BA25700050BFC2 /* CoreDataFeedImageDataStoreTests.swift */; };
+		96FBE07029BB6BAA00B98E27 /* CoreDataFeedStore+FeedImageDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FBE06F29BB6BAA00B98E27 /* CoreDataFeedStore+FeedImageDataStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -249,6 +250,7 @@
 		96F97159297F1E13002C61C4 /* FeedImageLoaderPresentationAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageLoaderPresentationAdapter.swift; sourceTree = "<group>"; };
 		96FB991529BA25700050BFC2 /* CoreDataFeedImageDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedImageDataStoreTests.swift; sourceTree = "<group>"; };
 		96FBE06E29BB6A3700B98E27 /* FeedStore 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FeedStore 2.xcdatamodel"; sourceTree = "<group>"; };
+		96FBE06F29BB6BAA00B98E27 /* CoreDataFeedStore+FeedImageDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataFeedStore+FeedImageDataStore.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -389,6 +391,7 @@
 			isa = PBXGroup;
 			children = (
 				96EC632A29148536006C7104 /* CoreDataFeedStore.swift */,
+				96FBE06F29BB6BAA00B98E27 /* CoreDataFeedStore+FeedImageDataStore.swift */,
 				96885E2A291553310078D997 /* CoreDataHelpers.swift */,
 				96885E2729154DFD0078D997 /* ManagedFeedImage.swift */,
 				96885E2529154DC30078D997 /* ManagedCache.swift */,
@@ -915,6 +918,7 @@
 				96885E2629154DC30078D997 /* ManagedCache.swift in Sources */,
 				9698612528ED9DCE00BFD69B /* EssentialFeed.docc in Sources */,
 				96885E2829154DFD0078D997 /* ManagedFeedImage.swift in Sources */,
+				96FBE07029BB6BAA00B98E27 /* CoreDataFeedStore+FeedImageDataStore.swift in Sources */,
 				96ED73B329B78863000BC5FF /* HTTPURLResponse+StatusCode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
