@@ -50,7 +50,7 @@ class FeedPresenterTests: XCTestCase {
     
     // MARK: - Helpers
     
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedPresenter, view: ViewSpy) {
+    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: FeedPresenter, view: ViewSpy) {
         let view = ViewSpy()
         let sut = FeedPresenter(feedView: view, loadingView: view, errorView: view)
         trackForMemoryLeaks(view, file: file, line: line)

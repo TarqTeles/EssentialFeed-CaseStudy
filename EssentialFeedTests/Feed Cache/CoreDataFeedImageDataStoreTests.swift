@@ -68,7 +68,7 @@ class CoreDataFeedImageDataStoreTests: XCTestCase {
     
     // MARK: - Helpers
     
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> CoreDataFeedStore {
+    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> CoreDataFeedStore {
         let storeURL = URL(fileURLWithPath: "/dev/null")
         let sut = try! CoreDataFeedStore(storeURL: storeURL)
         trackForMemoryLeaks(sut, file: file, line: line)
@@ -88,7 +88,7 @@ class CoreDataFeedImageDataStoreTests: XCTestCase {
         return LocalFeedImage(id: UUID(), description: "any description", location: "any location", url: url)
     }
     
-    private func expect(_ sut: CoreDataFeedStore, toCompleteRetrievalWith expectedResult: FeedImageDataStore.RetrievalResult, forURL url: URL, file: StaticString = #file, line: UInt = #line) {
+    private func expect(_ sut: CoreDataFeedStore, toCompleteRetrievalWith expectedResult: FeedImageDataStore.RetrievalResult, forURL url: URL, file: StaticString = #filePath, line: UInt = #line) {
         let exp = expectation(description: "Wainting for store retieval")
         
         sut.retrieve(dataForURL: url) { receivedResult in
@@ -105,7 +105,7 @@ class CoreDataFeedImageDataStoreTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
     
-    private func insert(_ data: Data, for url: URL, into sut: CoreDataFeedStore, file: StaticString = #file, line: UInt = #line) {
+    private func insert(_ data: Data, for url: URL, into sut: CoreDataFeedStore, file: StaticString = #filePath, line: UInt = #line) {
         let exp = expectation(description: "Witing for store insertion")
         let image = localImage(for: url)
         
