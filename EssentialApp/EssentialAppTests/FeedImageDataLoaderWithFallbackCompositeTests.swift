@@ -25,7 +25,15 @@ final class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
     }
     
     func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
-        _ = primaryLoader.loadImageData(from: url) { _ in }
+        _ = primaryLoader.loadImageData(from: url) { [weak self] result in
+            switch result {
+                case .success:
+                    break
+                    
+                case .failure:
+                    _ = self?.fallbackLoader.loadImageData(from: url) { _ in }
+            }
+        }
         return Task()
     }
 }
@@ -47,6 +55,17 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         
         XCTAssertEqual(primaryLoader.loadedURLs, [url], "Expected primaryLoader to load URL")
         XCTAssertTrue(fallbackLoader.loadedURLs.isEmpty, "Expected no loaded URLs in fallbackLoader")
+    }
+    
+    func test_loadImageData_loadsFromFallbackOnPrimaryLoaderFailure() {
+        let url = anyURL()
+        let (sut, primaryLoader, fallbackLoader) = makeSUT()
+        
+        _ = sut.loadImageData(from: url) { _ in }
+        primaryLoader.complete(with: anyNSError())
+        
+        XCTAssertEqual(primaryLoader.loadedURLs, [url], "Expected primaryLoader to load URL")
+        XCTAssertEqual(fallbackLoader.loadedURLs, [url], "Expected fallbackLoader to load URL")
     }
     
     // MARK: - Helpers
@@ -72,6 +91,8 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         URL(string: "https://any-url.com")!
     }
 
+    private func anyNSError() -> NSError{ NSError(domain: "any error", code: 1) }
+
     private class LoaderSpy: FeedImageDataLoader {
         private var messages = [(url: URL, completion: (FeedImageDataLoader.Result) -> Void)]()
         
@@ -88,6 +109,10 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
             messages.append((url, completion))
             return Task()
+        }
+        
+        func complete(with error: Error, at index: Int = 0) {
+            messages[index].completion(.failure(error))
         }
     }
 }
