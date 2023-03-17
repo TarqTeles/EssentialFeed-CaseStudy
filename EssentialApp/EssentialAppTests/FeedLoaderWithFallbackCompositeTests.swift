@@ -64,18 +64,6 @@ class FeedLoaderWithFallbackCompositeTests: XCTestCase {
 
     }
     
-    private class FeedLoaderStub: FeedLoader {
-        let result: FeedLoader.Result
-        
-        init(received: FeedLoader.Result) {
-            self.result = received
-        }
-        
-        func load(completion: @escaping (Result<[FeedImage], Error>) -> Void) {
-            completion(result)
-        }
-    }
-    
     private func uniqueFeed() -> [FeedImage] {
         return [FeedImage(id: UUID(), description: "any", location: "any", url: anyURL())]
     }
