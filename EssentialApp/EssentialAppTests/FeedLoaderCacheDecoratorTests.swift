@@ -8,13 +8,6 @@
 import XCTest
 import EssentialFeed
 
-protocol FeedCache {
-    typealias SaveResult = Result<Void, Error>
-    
-    func save(feed: [FeedImage], completion: @escaping (SaveResult) -> Void)
-}
-
-
 final class FeedLoaderCacheDecorator: FeedLoader {
     private let decoratee: FeedLoader
     private let cache: FeedCache
