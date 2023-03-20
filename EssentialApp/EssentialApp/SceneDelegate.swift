@@ -14,6 +14,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
+    let localStoreURL = NSPersistentContainer
+        .defaultDirectoryURL()
+        .appendingPathComponent("feed-store.sqlite")
+    
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -26,16 +30,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let client = makeRemoteClient()
         let remoteFeedLoader = RemoteFeedLoader(url: url, client: client)
         let remoteImageLoader = RemoteFeedImageDataLoader(client: client)
-        
-        let localStoreURL = NSPersistentContainer
-            .defaultDirectoryURL()
-            .appendingPathComponent("feed-store.sqlite")
-        
-        #if DEBUG
-        if CommandLine.arguments.contains("-reset") {
-            try? FileManager.default.removeItem(at: localStoreURL)
-        }
-        #endif
         
         let localStore = try! CoreDataFeedStore(storeURL: localStoreURL)
         let localFeedLoader = LocalFeedLoader(store: localStore, currentDate: Date.init)
@@ -56,30 +50,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = feedViewController
     }
     
-    private func makeRemoteClient() -> HTTPClient {
-        #if DEBUG
-        if UserDefaults.standard.string(forKey: "connectivity") == "offline" {
-            return alwaysFaillingHTTPClient()
-        }
-        #endif
-        
+    func makeRemoteClient() -> HTTPClient {
         let session = URLSession(configuration: .ephemeral)
         return URLSessionHTTPClient(session: session)
     }
     
-    #if DEBUG
-    private class alwaysFaillingHTTPClient: HTTPClient {
-        private class Task: HTTPClientTask {
-            func cancel() {}
-        }
-        
-        func get(from url: URL, completion: @escaping (Result<(Data, HTTPURLResponse), Error>) -> Void) -> HTTPClientTask {
-            completion(.failure(NSError(domain: "offline", code: 0)))
-            return Task()
-        }
-    }
-    #endif
-
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
