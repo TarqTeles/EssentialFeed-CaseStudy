@@ -25,6 +25,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
         
+        configureWindow()
+    }
+     
+    func configureWindow() {
         let url = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed/v1/feed")!
         
         let client = makeRemoteClient()
@@ -49,7 +53,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             )
         )
         
-        window?.rootViewController = feedViewController
+        window?.rootViewController = UINavigationController(
+            rootViewController: feedViewController)
     }
     
     func makeRemoteClient() -> HTTPClient {
