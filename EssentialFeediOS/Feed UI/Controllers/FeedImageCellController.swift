@@ -17,6 +17,10 @@ public final class FeedImageCellController: FeedImageView {
     private let delegate: FeedImageCellControllerDelegate
     private var cell: FeedImageCell?
     
+    var hasLoadedImage: Bool {
+        cell?.imageView?.image != nil
+    }
+    
     public init(delegate: FeedImageCellControllerDelegate) {
         self.delegate = delegate
     }
