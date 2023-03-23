@@ -21,5 +21,3 @@ public final class FeedImageCell: UITableViewCell {
         onRetry?()
     }
 }
-
-// parei em 13:41

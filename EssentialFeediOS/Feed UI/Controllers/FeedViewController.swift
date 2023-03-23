@@ -17,6 +17,8 @@ public class FeedViewController: UITableViewController, UITableViewDataSourcePre
 
     @IBOutlet public private(set) var errorView: ErrorView?
     
+    private var loadingControllers = [IndexPath : FeedImageCellController]()
+    
     private var tableModel = [FeedImageCellController]() {
         didSet { tableView.reloadData() }
     }
@@ -32,6 +34,7 @@ public class FeedViewController: UITableViewController, UITableViewDataSourcePre
     }
     
     public func display(_ cellControllers: [FeedImageCellController]) {
+        loadingControllers = [:]
         tableModel = cellControllers
     }
     
@@ -60,7 +63,7 @@ public class FeedViewController: UITableViewController, UITableViewDataSourcePre
     }
     
     public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        // if image is still nil (load was cancelled before finishing, then load again
+        // if image is still nil (load was cancelled before finishing), then load again
     }
     
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
@@ -80,11 +83,14 @@ public class FeedViewController: UITableViewController, UITableViewDataSourcePre
     }
     
     private func cellController(forRowAt indexPath: IndexPath) -> FeedImageCellController {
-        return tableModel[indexPath.row]
+        let controller = tableModel[indexPath.row]
+        loadingControllers[indexPath] = controller
+        return controller
     }
     
     private func removeCellController(forRowAt indexPath: IndexPath) {
-        cellController(forRowAt: indexPath).cancelLoad()
+        loadingControllers[indexPath]?.cancelLoad()
+        loadingControllers[indexPath] = nil
     }
 }
 
