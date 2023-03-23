@@ -27,6 +27,7 @@ public final class ErrorView: UIView {
 
     func show(message: String) {
         button.setTitle(message, for: .normal)
+        button.titleLabel?.textAlignment = .center
 
         UIView.animate(withDuration: 0.25) {
             self.alpha = 1
