@@ -99,9 +99,6 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="353" height="353"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="plain">
-                                                                <backgroundConfiguration key="background">
-                                                                    <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
-                                                                </backgroundConfiguration>
                                                                 <attributedString key="attributedTitle">
                                                                     <fragment content="⟳">
                                                                         <attributes>
@@ -112,6 +109,11 @@
                                                                 </attributedString>
                                                                 <color key="baseForegroundColor" systemColor="secondaryLabelColor"/>
                                                             </buttonConfiguration>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                                    <color key="value" systemColor="secondarySystemBackgroundColor"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
                                                             <connections>
                                                                 <action selector="retryButtonTapped" destination="NdF-qu-AxF" eventType="touchUpInside" id="3jq-UY-XVz"/>
                                                             </connections>
