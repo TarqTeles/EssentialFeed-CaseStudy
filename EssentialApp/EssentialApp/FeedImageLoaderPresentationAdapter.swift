@@ -26,17 +26,19 @@ final class FeedImageLoaderPresentationAdapter<View: FeedImageView, Image>: Feed
         presenter?.didStartLoadingImageData(for: model)
         let model = self.model
         
-        self.cancellable = imageLoader(model.url).sink(
-            receiveCompletion: { [weak presenter] completion in
-                switch completion {
-                    case .finished: break
-                    case let .failure(error):
-                        presenter?.didFinishLoadingImageData(with: error, for: model)
-                }
-            },
-            receiveValue: { [weak presenter] data in
-                presenter?.didFinishLoadingImageData(with: data, for: model)
-            })
+        self.cancellable = imageLoader(model.url)
+            .dispatchingOnMainQueue()
+            .sink(
+                receiveCompletion: { [weak presenter] completion in
+                    switch completion {
+                        case .finished: break
+                        case let .failure(error):
+                            presenter?.didFinishLoadingImageData(with: error, for: model)
+                    }
+                },
+                receiveValue: { [weak presenter] data in
+                    presenter?.didFinishLoadingImageData(with: data, for: model)
+                })
     }
     
     func didCancelImageRequest() {
