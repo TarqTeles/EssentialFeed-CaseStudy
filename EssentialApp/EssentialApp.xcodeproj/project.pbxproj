@@ -46,6 +46,7 @@
 		96F46EA329C0FB0900C94391 /* EssentialFeed.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 96F46EA029C0FB0900C94391 /* EssentialFeed.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		96F46EA429C0FB0900C94391 /* EssentialFeediOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F46EA129C0FB0900C94391 /* EssentialFeediOS.framework */; };
 		96F46EA529C0FB0900C94391 /* EssentialFeediOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 96F46EA129C0FB0900C94391 /* EssentialFeediOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		96F80E9729D1D8A9001776AF /* CombineHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F80E9629D1D8A9001776AF /* CombineHelpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +123,7 @@
 		96F46E9229C0F66500C94391 /* EssentialAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EssentialAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		96F46EA029C0FB0900C94391 /* EssentialFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EssentialFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96F46EA129C0FB0900C94391 /* EssentialFeediOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EssentialFeediOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		96F80E9629D1D8A9001776AF /* CombineHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineHelpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +206,7 @@
 			children = (
 				96F46E6F29C0F66200C94391 /* AppDelegate.swift */,
 				96F46E7129C0F66200C94391 /* SceneDelegate.swift */,
+				96F80E9629D1D8A9001776AF /* CombineHelpers.swift */,
 				96DFF8F829CA34A300FB0BB1 /* FeedUIComposer.swift */,
 				96DFF8F729CA34A200FB0BB1 /* FeedImageLoaderPresentationAdapter.swift */,
 				96DFF8F629CA34A200FB0BB1 /* FeedLoaderPresenterAdapter.swift */,
@@ -385,6 +388,7 @@
 				96DFF8FE29CA34A300FB0BB1 /* FeedUIComposer.swift in Sources */,
 				96DFF8F929CA34A300FB0BB1 /* FeedLoaderPresenterAdapter.swift in Sources */,
 				96DFF8FD29CA34A300FB0BB1 /* WeakRefVirtualProxy.swift in Sources */,
+				96F80E9729D1D8A9001776AF /* CombineHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
