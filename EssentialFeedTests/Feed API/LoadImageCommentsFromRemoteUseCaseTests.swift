@@ -86,17 +86,13 @@ final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
     func test_load_deliverItemsOn2xxHTTPResponseWithJSONItems() {
         let (sut, client) = makeSUT()
         
-        let item1 = makeItem(id: UUID(), imageURL: URL(string: "https://a-url.com")!)
-
-        let item2 = makeItem(id: UUID(), description: "a description", location: "a location", imageURL: URL(string: "https://another-url.com")!)
-        
-        let items = [item1.model, item2.model]
+        let comment = aComment()
         
         let samples = [200,201,250,299]
 
         samples.enumerated().forEach { index, code in
-            expect(sut, toCompleteWith: .success(items), when: {
-                let json = makeItemsJSON([item1.json, item2.json])
+            expect(sut, toCompleteWith: .success([comment.model]), when: {
+                let json = makeItemsJSON([comment.json])
                 client.complete(withStatusCode: code, data: json, at:  index)
             })
         }
@@ -128,19 +124,34 @@ final class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
         return (sut, client)
     }
 
-    private func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageURL: URL) -> (model: FeedImage, json: [String:Any]) {
-        let item = FeedImage(
+    private func aComment() -> (model: ImageComment, json: [String:Any]) {
+        makeItem(id: UUID(),
+                 message: "a message",
+                 createdAt: makeDateTupleFor(iso8601string: "2023-02-28T15:07:02+00:00"),
+                 username: "a username"
+        )
+    }
+    
+    private func makeDateTupleFor(iso8601string: String) -> (date: Date, iso8601string: String) {
+        return (try! Date(iso8601string, strategy: .iso8601), iso8601string)
+    }
+    
+    private func makeItem(id: UUID, message: String, createdAt: (date: Date, iso8601string: String), username: String)
+    -> (model: ImageComment, json: [String:Any]) {
+        let item = ImageComment(
             id: id,
-            description: description,
-            location: location,
-            url: imageURL
+            message: message,
+            createdAt: createdAt.date,
+            username: username
         )
         
         let itemJSON: [String:Any] = [
             "id" : item.id.uuidString,
-            "description" : item.description,
-            "location" : item.location,
-            "image" : item.url.absoluteString
+            "message" : item.message,
+            "created_at" : createdAt.iso8601string,
+            "author" : [
+                "username" : item.username
+                ]
         ].compactMapValues({$0})
 
         return (item, itemJSON)
