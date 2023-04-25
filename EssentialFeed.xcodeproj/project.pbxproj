@@ -304,7 +304,7 @@
 			path = "Feed Cache";
 			sourceTree = "<group>";
 		};
-		9616501A2905A6C20075E1C8 /* Feed Cache */ = {
+		9616501A2905A6C20075E1C8 /* Cache */ = {
 			isa = PBXGroup;
 			children = (
 				96885E29291552780078D997 /* Infrastructure */,
@@ -315,7 +315,7 @@
 				96F2AED929B8FBD100658EBA /* FeedImageDataStore.swift */,
 				96F2AEDB29B8FC1800658EBA /* LocalFeedImageDataLoader.swift */,
 			);
-			path = "Feed Cache";
+			path = Cache;
 			sourceTree = "<group>";
 		};
 		961D065C2906CC9A00F9B136 /* Helper */ = {
@@ -358,6 +358,7 @@
 			children = (
 				9631B8C829F8653C0041F7D5 /* Domain */,
 				9631B8C929F865440041F7D5 /* API */,
+				9616501A2905A6C20075E1C8 /* Cache */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -516,7 +517,6 @@
 				9631B8C329F864D60041F7D5 /* Shared */,
 				9631B8C629F8650B0041F7D5 /* Feed */,
 				9631B8C729F865220041F7D5 /* Comments */,
-				9616501A2905A6C20075E1C8 /* Feed Cache */,
 				96D6E3B629B0F76A00F2CF7F /* Feed Presentation */,
 			);
 			path = EssentialFeed;
