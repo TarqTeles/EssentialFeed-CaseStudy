@@ -39,108 +39,60 @@ final class RemoteLoaderTests: XCTestCase {
         let (sut, client) = makeSUT()
 
         expect(sut, toCompleteWith: failure(.connectivity), when: {
-            let clientError = NSError(domain: "Test", code: 0)
+            let clientError = anyNSError()
             client.complete(with: clientError)
         })
     }
     
-    func test_load_deliversErrorOnNon200HTTPResponse() {
-        let (sut, client) = makeSUT()
-
-        let samples = [199,201,404,500]
-        
-        samples.enumerated().forEach { index, code in
-            expect(sut, toCompleteWith: failure(.invalidData), when: {
-                let json = makeItemsJSON([])
-            client.complete(withStatusCode: code, data: json, at:  index)
-            })
-        }
-    }
-    
-    func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() {
-        let (sut, client) = makeSUT()
+    func test_load_deliversErrorOnMapperError() {
+        let (sut, client) = makeSUT(mapper: { _,_ in
+            throw anyNSError()
+        })
         
         
         expect(sut, toCompleteWith: failure(.invalidData), when: {
-            let invalidJSON = Data("invalid json".utf8)
-            client.complete(withStatusCode: 200, data: invalidJSON)
+            client.complete(withStatusCode: 200, data: anyData())
         })
     }
     
-    func test_load_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() {
-        let (sut, client) = makeSUT()
-
-        expect(sut, toCompleteWith: .success([]), when: {
-            let emptyListJSON = makeItemsJSON([])
-            client.complete(withStatusCode: 200, data: emptyListJSON)
+    func test_load_deliverMappedResource() {
+        let resource = "a resource"
+        let (sut, client) = makeSUT(mapper: { data,_  in
+            String(data: data, encoding: .utf8)!
         })
-    }
-    
-    func test_load_deliverItemsOn200HTTPResponseWithJSONItems() {
-        let (sut, client) = makeSUT()
-        
-        let item1 = makeItem(id: UUID(), imageURL: URL(string: "https://a-url.com")!)
-
-        let item2 = makeItem(id: UUID(), description: "a description", location: "a location", imageURL: URL(string: "https://another-url.com")!)
-        
-        let items = [item1.model, item2.model]
-        
-        expect(sut, toCompleteWith: .success(items), when: {
-            let json = makeItemsJSON([item1.json, item2.json])
-            client.complete(withStatusCode: 200, data: json)
+                
+        expect(sut, toCompleteWith: .success(resource), when: {
+            client.complete(withStatusCode: 200, data: Data(resource.utf8))
         })
     }
     
     func test_load_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
         let url = URL(string: "https://any-url.com")!
         let client = HTTPClientSpy()
-        var sut: RemoteLoader? = RemoteLoader(url: url, client: client)
+        var sut: RemoteLoader? = RemoteLoader<String>(url: url, client: client, mapper: { _,_  in "any" })
         
-        var capturedResult = [RemoteLoader.Result]()
+        var capturedResult = [RemoteLoader<String>.Result]()
         sut?.load { capturedResult.append($0) }
 
         sut = nil
-        client.complete(withStatusCode: 200, data: makeItemsJSON([]))
+        client.complete(withStatusCode: 200, data: anyData())
         
         XCTAssertTrue(capturedResult.isEmpty)
     }
     
     //MARK: -> Helpers
     
-    private func makeSUT(url: URL = URL(string: "https://a-url.com")!, file: StaticString = #filePath, line: UInt = #line) -> (RemoteLoader, HTTPClientSpy) {
+    private func makeSUT(url: URL = URL(string: "https://a-url.com")!, mapper: @escaping RemoteLoader<String>.Mapper = { _,_  in "any" }, file: StaticString = #filePath, line: UInt = #line) -> (RemoteLoader<String>, HTTPClientSpy) {
         let client = HTTPClientSpy()
-        let sut = RemoteLoader(url: url, client: client)
+        let sut = RemoteLoader<String>(url: url, client: client, mapper: mapper)
         
         trackForMemoryLeaks(sut, file: file, line: line)
         trackForMemoryLeaks(client, file: file, line: line)
 
         return (sut, client)
     }
-
-    private func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageURL: URL) -> (model: FeedImage, json: [String:Any]) {
-        let item = FeedImage(
-            id: id,
-            description: description,
-            location: location,
-            url: imageURL
-        )
-        
-        let itemJSON: [String:Any] = [
-            "id" : item.id.uuidString,
-            "description" : item.description,
-            "location" : item.location,
-            "image" : item.url.absoluteString
-        ].compactMapValues({$0})
-
-        return (item, itemJSON)
-    }
     
-    private func makeItemsJSON(_ items: [[String:Any]]) -> Data {
-        let json = [ "items" : items ]
-        return try! JSONSerialization.data(withJSONObject: json)
-    }
-    
-    private func expect(_ sut: RemoteLoader, toCompleteWith expectedResult: RemoteLoader.Result, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+    private func expect(_ sut: RemoteLoader<String>, toCompleteWith expectedResult: RemoteLoader<String>.Result, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
         
         let exp = expectation(description: "Wait for load completion")
         
@@ -149,7 +101,7 @@ final class RemoteLoaderTests: XCTestCase {
                 case let (.success(receivedItems), .success(expectedItems)):
                     XCTAssertEqual(receivedItems, expectedItems, file: file, line: line)
 
-                case let (.failure(receivedError as RemoteLoader.Error), .failure(expectedError as RemoteLoader.Error)):
+                case let (.failure(receivedError as RemoteLoader<String>.Error), .failure(expectedError as RemoteLoader<String>.Error)):
                     XCTAssertEqual(receivedError, expectedError, file: file, line: line)
 
                 default:
@@ -164,7 +116,7 @@ final class RemoteLoaderTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
 
-    private func failure(_ error: RemoteLoader.Error) -> RemoteLoader.Result {
+    private func failure(_ error: RemoteLoader<String>.Error) -> RemoteLoader<String>.Result {
         return .failure(error)
     }
 }
