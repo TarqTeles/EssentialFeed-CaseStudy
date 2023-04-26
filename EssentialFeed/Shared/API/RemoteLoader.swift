@@ -44,7 +44,7 @@ public final class RemoteLoader<Resource> {
             let items = try mapper(data, response)
             return .success(items)
         } catch {
-            return .failure(Error.invalidData)
+            return .failure(error)
         }
     }
 }
