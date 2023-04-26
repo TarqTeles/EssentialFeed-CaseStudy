@@ -49,17 +49,24 @@ final class EssentialFeedAPIEndToEndTests: XCTestCase {
     
     private func getFeedResult(file: StaticString = #filePath, line: UInt = #line) -> FeedLoader.Result? {
         let testServerURL = feedTestServerURL
-        let loader = RemoteLoader(url: testServerURL, client: ephemeralClient(), mapper: FeedItemsMapper.map)
-        trackForMemoryLeaks(loader, file: file, line: line)
 
+        let client = ephemeralClient()
+        
         let exp = expectation(description: "Wait for load completion")
         
         var receivedResult: FeedLoader.Result?
-        loader.load(completion: { result in
-            receivedResult = result
+        client.get(from: testServerURL) { result in
+            
+            receivedResult = result.flatMap { (data, response) in
+                do {
+                    return .success(try FeedItemsMapper.map(data, from: response))
+                } catch {
+                    return .failure(error)
+                }
+            }
 
             exp.fulfill()
-        })
+        }
         
         wait(for: [exp], timeout: 15.0)
         
@@ -143,29 +150,4 @@ final class EssentialFeedAPIEndToEndTests: XCTestCase {
         private func imageURL(at index: Int) -> URL {
             return URL(string: "https://url-\(index+1).com")!
         }
-
-    /*
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-     */
 }
