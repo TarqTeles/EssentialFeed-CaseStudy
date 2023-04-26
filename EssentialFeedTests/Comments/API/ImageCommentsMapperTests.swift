@@ -87,8 +87,4 @@ final class ImageCommentsMapperTests: XCTestCase {
 
         return (item, itemJSON)
     }
-    
-    private func failure(_ error: RemoteImageCommentsLoader.Error) -> RemoteImageCommentsLoader.Result {
-        return .failure(error)
-    }
 }
