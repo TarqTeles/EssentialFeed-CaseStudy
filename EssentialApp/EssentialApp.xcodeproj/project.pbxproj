@@ -193,7 +193,7 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		96E673F229F9A212007D2E50 /* snapshot */ = {
+		96E673F229F9A212007D2E50 /* snapshots */ = {
 			isa = PBXGroup;
 			children = (
 				96E673F329F9A212007D2E50 /* FEED_WITH_ERROR_MESSAGE_dark.png */,
@@ -205,7 +205,7 @@
 				96E673F929F9A212007D2E50 /* FEED_WITH_FAILED_LOADING_dark.png */,
 				96E673FA29F9A212007D2E50 /* EMPTY_FEED_dark.png */,
 			);
-			path = snapshot;
+			path = snapshots;
 			sourceTree = "<group>";
 		};
 		96F46E6329C0F66200C94391 = {
@@ -250,7 +250,7 @@
 		96F46E8529C0F66500C94391 /* EssentialAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				96E673F229F9A212007D2E50 /* snapshot */,
+				96E673F229F9A212007D2E50 /* snapshots */,
 				961F531D29C350B000C2A1F6 /* Helpers */,
 				96DFF8F129CA309900FB0BB1 /* SceneDelegateTests.swift */,
 				96DFF8FF29CA34BC00FB0BB1 /* FeedUIIntegrationTests.swift */,
