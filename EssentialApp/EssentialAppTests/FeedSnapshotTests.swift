@@ -32,7 +32,7 @@ final class FeedSnapshotTests: XCTestCase {
     func test_feedWithErrorMessage() {
         let sut = makeSUT()
         
-        sut.display(FeedErrorViewModel(message: "This is a\nmulti-line\nerror message"))
+        sut.display(ResourceErrorViewModel(message: "This is a\nmulti-line\nerror message"))
         
         assert(snapshot: sut.snapshot(for: .iPhone13(style: .light)), named: "FEED_WITH_ERROR_MESSAGE_light")
         assert(snapshot: sut.snapshot(for: .iPhone13(style: .dark)), named: "FEED_WITH_ERROR_MESSAGE_dark")
