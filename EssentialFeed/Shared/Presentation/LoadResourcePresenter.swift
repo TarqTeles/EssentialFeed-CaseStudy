@@ -18,10 +18,6 @@ public final class LoadResourcePresenter {
         self.errorView = errorView
     }
     
-    public static var title: String {
-        Localized.Feed.title
-    }
-    
     public func didStartLoadingFeed() {
         errorView.display(.noError)
         loadingView.display(FeedLoadingViewModel(isLoading: true))
