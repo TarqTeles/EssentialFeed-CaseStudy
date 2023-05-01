@@ -12,14 +12,14 @@ import EssentialFeediOS
 final class FeedLoaderPresenterAdapter: FeedViewControllerDelegate {
     private let feedLoader: () -> AnyPublisher<[FeedImage], Error>
     private var cancellable: Cancellable?
-    var presenter: FeedPresenter?
+    var presenter: LoadResourcePresenter<[FeedImage], FeedViewAdapter>?
 
     init(feedLoader: @escaping () -> AnyPublisher<[FeedImage], Error>) {
         self.feedLoader = feedLoader
     }
     
     func didRequestFeedRefresh() {
-        presenter?.didStartLoadingFeed()
+        presenter?.didStartLoading()
         
         cancellable = feedLoader()
             .dispatchingOnMainQueue()
@@ -28,11 +28,11 @@ final class FeedLoaderPresenterAdapter: FeedViewControllerDelegate {
                     switch completion {
                         case .finished: break
                         case let .failure(error):
-                            presenter?.didFinishLoadingFeed(with: error)
+                            presenter?.didFinishLoading(with: error)
                     }
                 },
                 receiveValue: { [weak presenter] feed in
-                    presenter?.didFinishLoadingFeed(with: feed)
+                    presenter?.didFinishLoading(with: feed)
                 })
     }
 }
