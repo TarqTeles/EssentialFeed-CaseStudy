@@ -102,6 +102,12 @@
 		96EC42D62A018969003C44E7 /* EMPTY_LIST_light.png in Resources */ = {isa = PBXBuildFile; fileRef = 96EC42D22A018969003C44E7 /* EMPTY_LIST_light.png */; };
 		96EC42D72A018969003C44E7 /* LIST_WITH_ERROR_MESSAGE_light.png in Resources */ = {isa = PBXBuildFile; fileRef = 96EC42D32A018969003C44E7 /* LIST_WITH_ERROR_MESSAGE_light.png */; };
 		96EC42D82A018969003C44E7 /* EMPTY_LIST_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 96EC42D42A018969003C44E7 /* EMPTY_LIST_dark.png */; };
+		96EC42DA2A018EAB003C44E7 /* ImageCommentsSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EC42D92A018EAB003C44E7 /* ImageCommentsSnapshotTests.swift */; };
+		96EC42DE2A0191C2003C44E7 /* ImageCommentCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EC42DD2A0191C2003C44E7 /* ImageCommentCellController.swift */; };
+		96EC42E12A0192F7003C44E7 /* ImageComments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96EC42E02A0192F7003C44E7 /* ImageComments.storyboard */; };
+		96EC42E52A019491003C44E7 /* LIST_WITH_COMMENTS_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 96EC42E32A019491003C44E7 /* LIST_WITH_COMMENTS_dark.png */; };
+		96EC42E62A019491003C44E7 /* LIST_WITH_COMMENTS_light.png in Resources */ = {isa = PBXBuildFile; fileRef = 96EC42E42A019491003C44E7 /* LIST_WITH_COMMENTS_light.png */; };
+		96EC42E82A019523003C44E7 /* ImageCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EC42E72A019523003C44E7 /* ImageCommentCell.swift */; };
 		96EC632B29148536006C7104 /* CoreDataFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EC632A29148536006C7104 /* CoreDataFeedStore.swift */; };
 		96ED73B329B78863000BC5FF /* HTTPURLResponse+StatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96ED73B229B78863000BC5FF /* HTTPURLResponse+StatusCode.swift */; };
 		96ED73B529B78A0E000BC5FF /* URLProtocolStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96ED73B429B78A0E000BC5FF /* URLProtocolStub.swift */; };
@@ -265,6 +271,12 @@
 		96EC42D22A018969003C44E7 /* EMPTY_LIST_light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EMPTY_LIST_light.png; sourceTree = "<group>"; };
 		96EC42D32A018969003C44E7 /* LIST_WITH_ERROR_MESSAGE_light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LIST_WITH_ERROR_MESSAGE_light.png; sourceTree = "<group>"; };
 		96EC42D42A018969003C44E7 /* EMPTY_LIST_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EMPTY_LIST_dark.png; sourceTree = "<group>"; };
+		96EC42D92A018EAB003C44E7 /* ImageCommentsSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentsSnapshotTests.swift; sourceTree = "<group>"; };
+		96EC42DD2A0191C2003C44E7 /* ImageCommentCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentCellController.swift; sourceTree = "<group>"; };
+		96EC42E02A0192F7003C44E7 /* ImageComments.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ImageComments.storyboard; sourceTree = "<group>"; };
+		96EC42E32A019491003C44E7 /* LIST_WITH_COMMENTS_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LIST_WITH_COMMENTS_dark.png; sourceTree = "<group>"; };
+		96EC42E42A019491003C44E7 /* LIST_WITH_COMMENTS_light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LIST_WITH_COMMENTS_light.png; sourceTree = "<group>"; };
+		96EC42E72A019523003C44E7 /* ImageCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCommentCell.swift; sourceTree = "<group>"; };
 		96EC632A29148536006C7104 /* CoreDataFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedStore.swift; sourceTree = "<group>"; };
 		96ED73B229B78863000BC5FF /* HTTPURLResponse+StatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPURLResponse+StatusCode.swift"; sourceTree = "<group>"; };
 		96ED73B429B78A0E000BC5FF /* URLProtocolStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLProtocolStub.swift; sourceTree = "<group>"; };
@@ -767,6 +779,8 @@
 		96EC429B2A018131003C44E7 /* ImageComments UI */ = {
 			isa = PBXGroup;
 			children = (
+				96EC42E22A019491003C44E7 /* snapshots */,
+				96EC42D92A018EAB003C44E7 /* ImageCommentsSnapshotTests.swift */,
 			);
 			path = "ImageComments UI";
 			sourceTree = "<group>";
@@ -805,6 +819,41 @@
 			path = snapshots;
 			sourceTree = "<group>";
 		};
+		96EC42DB2A01919B003C44E7 /* ImageComments UI */ = {
+			isa = PBXGroup;
+			children = (
+				96EC42DC2A0191AE003C44E7 /* Controllers */,
+				96EC42DF2A0192D7003C44E7 /* Views */,
+			);
+			path = "ImageComments UI";
+			sourceTree = "<group>";
+		};
+		96EC42DC2A0191AE003C44E7 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				96EC42DD2A0191C2003C44E7 /* ImageCommentCellController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		96EC42DF2A0192D7003C44E7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				96EC42E72A019523003C44E7 /* ImageCommentCell.swift */,
+				96EC42E02A0192F7003C44E7 /* ImageComments.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		96EC42E22A019491003C44E7 /* snapshots */ = {
+			isa = PBXGroup;
+			children = (
+				96EC42E32A019491003C44E7 /* LIST_WITH_COMMENTS_dark.png */,
+				96EC42E42A019491003C44E7 /* LIST_WITH_COMMENTS_light.png */,
+			);
+			path = snapshots;
+			sourceTree = "<group>";
+		};
 		96ED73B129B78851000BC5FF /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -818,6 +867,7 @@
 			children = (
 				9619762E2A01622B00C52B1D /* Shared UI */,
 				96D734B82948E26900915235 /* Feed UI */,
+				96EC42DB2A01919B003C44E7 /* ImageComments UI */,
 				96F8E630292FF23E00767D2E /* EssentialFeediOS.docc */,
 			);
 			path = EssentialFeediOS;
@@ -1058,6 +1108,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				96037F632979825D008B07A3 /* Feed.storyboard in Resources */,
+				96EC42E12A0192F7003C44E7 /* ImageComments.storyboard in Resources */,
 				96A02DFF2979859200855F88 /* Feed.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1072,7 +1123,9 @@
 				96EC42BD2A018356003C44E7 /* FEED_WITH_CONTENT_dark.png in Resources */,
 				96EC42C62A018356003C44E7 /* FEED_WITH_FAILED_LOADING_dark.png in Resources */,
 				96EC42D82A018969003C44E7 /* EMPTY_LIST_dark.png in Resources */,
+				96EC42E62A019491003C44E7 /* LIST_WITH_COMMENTS_light.png in Resources */,
 				96EC42D72A018969003C44E7 /* LIST_WITH_ERROR_MESSAGE_light.png in Resources */,
+				96EC42E52A019491003C44E7 /* LIST_WITH_COMMENTS_dark.png in Resources */,
 				96EC42C12A018356003C44E7 /* FEED_WITH_CONTENT_light.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1185,6 +1238,7 @@
 				9680912529314EE600D636CB /* ListViewController.swift in Sources */,
 				96A02E022979C15600855F88 /* UITableView+Dequeueing.swift in Sources */,
 				96A02E042979C3C600855F88 /* UIImageView+Animations.swift in Sources */,
+				96EC42DE2A0191C2003C44E7 /* ImageCommentCellController.swift in Sources */,
 				96C1965429674DF800FCA571 /* FeedImageCellController.swift in Sources */,
 				96D9625729CBA3B0009563C7 /* UITableView+HeaderSizing.swift in Sources */,
 				96A9E2E4293F9FC200BC9991 /* UIKit+Shimmering.swift in Sources */,
@@ -1192,6 +1246,7 @@
 				96E9E5D529AE831D007C2D2C /* ErrorView.swift in Sources */,
 				96566EFD293A7FFB00D9A0E1 /* FeedImageCell.swift in Sources */,
 				96F8E631292FF23E00767D2E /* EssentialFeediOS.docc in Sources */,
+				96EC42E82A019523003C44E7 /* ImageCommentCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1205,6 +1260,7 @@
 				96EC42A42A018226003C44E7 /* UIView+TestHelpers.swift in Sources */,
 				96EC429D2A01815F003C44E7 /* FeedSnapshotTests.swift in Sources */,
 				96EC42C92A018417003C44E7 /* ListSnapshotTests.swift in Sources */,
+				96EC42DA2A018EAB003C44E7 /* ImageCommentsSnapshotTests.swift in Sources */,
 				96EC42A62A018332003C44E7 /* UIImage+TestHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
