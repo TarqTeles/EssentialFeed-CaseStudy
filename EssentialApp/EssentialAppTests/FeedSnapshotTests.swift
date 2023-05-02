@@ -121,7 +121,14 @@ private class ImageStub: FeedImageCellControllerDelegate {
     }
     
     func didRequestImage() {
-        controller?.display(viewModel)
+        if let image = viewModel.image {
+            controller?.display(image)
+            controller?.display(ResourceLoadingViewModel(isLoading: false))
+            controller?.display(ResourceErrorViewModel(message: nil))
+        } else {
+            controller?.display(ResourceLoadingViewModel(isLoading: false))
+            controller?.display(ResourceErrorViewModel(message: "invalid image data"))
+        }        
     }
     
     func didCancelImageRequest() {}

@@ -48,16 +48,7 @@ public final class FeedImageCellController: FeedImageView, ResourceView, Resourc
         delegate.didCancelImageRequest()
     }
 
-    // TODO: remove this when finished
-    public func display(_ viewModel: FeedImageViewModel<UIImage>) {
-        cell?.descriptionLabel.text = viewModel.description
-        cell?.locationLabel.text = viewModel.location
-        cell?.locationContainer.isHidden = !viewModel.hasLocation
-        cell?.feedImageView.setAnimatedImage(viewModel.image)
-        cell?.feedImageContainer.isShimmering = viewModel.isLoading
-        cell?.feedImageRetryButton.isHidden = !viewModel.shouldRetry
-        cell?.onRetry = delegate.didRequestImage
-    }
+    public func display(_ viewModel: FeedImageViewModel<UIImage>) {}
     
     public func display(_ resourceViewModel: UIImage) {
         cell?.feedImageView.setAnimatedImage(resourceViewModel)

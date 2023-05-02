@@ -39,16 +39,17 @@ final class LoadResourcePresentationAdapter<Resource, View: ResourceView> {
 
 extension LoadResourcePresentationAdapter: FeedViewControllerDelegate {
     func didRequestFeedRefresh() {
-        self.loadResource()
+        loadResource()
     }
 }
 
 extension LoadResourcePresentationAdapter: FeedImageCellControllerDelegate {
     func didRequestImage() {
-        self.loadResource()
+        loadResource()
     }
     
     func didCancelImageRequest() {
-        self.cancellable?.cancel()
+        cancellable?.cancel()
+        cancellable = nil
     }
 }
