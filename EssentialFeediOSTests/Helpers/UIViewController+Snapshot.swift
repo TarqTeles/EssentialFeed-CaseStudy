@@ -78,6 +78,7 @@ private final class SnapshotWindow: UIWindow {
     }
     
     func snapshot() -> UIImage {
+        enforceLayoutCycle()
         let renderer = UIGraphicsImageRenderer(bounds: bounds, format: .init(for: traitCollection))
         return renderer.image(actions: { action in
             layer.render(in: action.cgContext)
