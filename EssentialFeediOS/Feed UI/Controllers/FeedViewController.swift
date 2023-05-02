@@ -12,14 +12,20 @@ public protocol FeedViewControllerDelegate {
     func didRequestFeedRefresh()
 }
 
+public protocol CellController {
+    func view(in: UITableView) -> UITableViewCell
+    func preload()
+    func cancelLoad()
+}
+
 public class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
     public var delegate: FeedViewControllerDelegate?
 
     @IBOutlet public private(set) var errorView: ErrorView?
     
-    private var loadingControllers = [IndexPath : FeedImageCellController]()
+    private var loadingControllers = [IndexPath : CellController]()
     
-    private var tableModel = [FeedImageCellController]() {
+    private var tableModel = [CellController]() {
         didSet { tableView.reloadData() }
     }
     
@@ -33,7 +39,7 @@ public class FeedViewController: UITableViewController, UITableViewDataSourcePre
         delegate?.didRequestFeedRefresh()
     }
     
-    public func display(_ cellControllers: [FeedImageCellController]) {
+    public func display(_ cellControllers: [CellController]) {
         loadingControllers = [:]
         tableModel = cellControllers
     }
@@ -61,14 +67,7 @@ public class FeedViewController: UITableViewController, UITableViewDataSourcePre
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         removeCellController(forRowAt: indexPath)
     }
-    
-    public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let controller = cellController(forRowAt: indexPath)
-        if !controller.hasLoadedImage {
-            controller.preload()
-        }
-    }
-    
+        
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
             cellController(forRowAt: indexPath).preload()
@@ -85,7 +84,7 @@ public class FeedViewController: UITableViewController, UITableViewDataSourcePre
         tableView.sizeTableHeaderToFit()
     }
     
-    private func cellController(forRowAt indexPath: IndexPath) -> FeedImageCellController {
+    private func cellController(forRowAt indexPath: IndexPath) -> CellController {
         let controller = tableModel[indexPath.row]
         loadingControllers[indexPath] = controller
         return controller
