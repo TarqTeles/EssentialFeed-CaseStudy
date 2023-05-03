@@ -96,14 +96,14 @@ final class CommentsUIIntegrationTests: FeedUIIntegrationTests {
         assertThat(sut, isRendering: [comment])
     }
     
-    override func test_loadFeedCompletion_rendersErrorMessageOnErrorUntilNextReload() {
+    func test_loadCommentsCompletion_rendersErrorMessageOnErrorUntilNextReload() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
         XCTAssertEqual(sut.errorMessage, nil, "Expect no error messages on load")
         
         loader.completeCommentsLoadingWithError(at: 0)
-        XCTAssertEqual(sut.errorMessage, loadError, "Expect feed load error message on load failure")
+        XCTAssertEqual(sut.errorMessage, loadError, "Expect comments load error message on load failure")
         
         sut.simulateUserInitiatedReload()
         XCTAssertEqual(sut.errorMessage, nil, "Expect no error messages after user initiated reload")
