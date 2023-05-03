@@ -9,7 +9,7 @@ import UIKit
 import EssentialFeed
 
 public class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
-    @IBOutlet public private(set) var errorView: ErrorView?
+    public private(set) var errorView = ErrorView()
     
     private var loadingControllers = [IndexPath : CellController]()
     
@@ -22,7 +22,30 @@ public class ListViewController: UITableViewController, UITableViewDataSourcePre
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureErrorView()
         refresh()
+    }
+    
+    private func configureErrorView() {
+        let container = UIView()
+        container.backgroundColor = .clear
+        container.addSubview(errorView)
+        
+        errorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            errorView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            errorView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            errorView.topAnchor.constraint(equalTo: container.topAnchor),
+            errorView.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+        ])
+        
+        tableView.tableHeaderView = container
+        
+        errorView.onHide = { [weak self] in
+            self?.tableView.beginUpdates()
+            self?.tableView.sizeTableHeaderToFit()
+            self?.tableView.endUpdates()
+        }
     }
 
     @IBAction private func refresh() {
@@ -40,9 +63,9 @@ public class ListViewController: UITableViewController, UITableViewDataSourcePre
     
     public func display(_ viewModel: ResourceErrorViewModel) {
         if let errorMessage = viewModel.message {
-            errorView?.show(message: errorMessage)
+            errorView.show(message: errorMessage)
         } else {
-            errorView?.hideMessage()
+            errorView.hideMessageAnimated()
         }
     }
 
