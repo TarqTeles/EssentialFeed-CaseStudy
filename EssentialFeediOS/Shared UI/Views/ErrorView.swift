@@ -14,7 +14,7 @@ public final class ErrorView: UIButton {
     
     public var onHide: (() -> Void)?
 
-public override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
     }
@@ -23,22 +23,29 @@ public override init(frame: CGRect) {
         super.init(coder: coder)
     }
     
+    private var titleAttributes: AttributeContainer {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = NSTextAlignment.center
+
+        var attributes = AttributeContainer()
+        attributes.paragraphStyle = paragraphStyle
+        attributes.font = UIFont.preferredFont(forTextStyle: .body)
+        return attributes
+    }
+
     private func configure() {
-        backgroundColor = .errorBackgroundColor
-        
+        var configuration = Configuration.plain()
+        configuration.titlePadding = 0
+        configuration.baseForegroundColor = .white
+        configuration.background.backgroundColor = .errorBackgroundColor
+        configuration.background.cornerRadius = 0
+        self.configuration = configuration
+
         addTarget(self, action: #selector(hideMessageAnimated), for: .touchUpInside)
-        
-        configureLabel()
+
         hideMessage()
     }
-    
-    private func configureLabel() {
-        titleLabel?.textColor = .white
-        titleLabel?.textAlignment = .center
-        titleLabel?.numberOfLines = 0
-        titleLabel?.font = .systemFont(ofSize: 17)
-        largeContentImageInsets = .init(top: 8, left: 8, bottom: 8, right: 8)
-    }
+
     private var isVisible: Bool {
         return alpha > 0
     }
