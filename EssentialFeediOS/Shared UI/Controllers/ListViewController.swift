@@ -23,6 +23,7 @@ public class ListViewController: UITableViewController, UITableViewDataSourcePre
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        dataSource.defaultRowAnimation = .middle
         tableView.dataSource = dataSource
         configureErrorView()
         refresh()
@@ -73,7 +74,12 @@ public class ListViewController: UITableViewController, UITableViewDataSourcePre
         let dl = cellController(forRowAt: indexPath)?.delegate
         dl?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
     }
-        
+     
+    public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let dl = cellController(forRowAt: indexPath)?.delegate
+        dl?.tableView?(tableView, willDisplay: cell, forRowAt: indexPath)
+    }
+    
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
             let dsp = cellController(forRowAt: indexPath)?.dataSourcePrefetching

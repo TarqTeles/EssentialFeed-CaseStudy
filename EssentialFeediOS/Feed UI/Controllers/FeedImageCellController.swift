@@ -37,6 +37,9 @@ extension FeedImageCellController: UITableViewDataSource, UITableViewDelegate, U
         cell?.onRetry = { [weak self] in
             self?.delegate.didRequestImage()
         }
+        cell?.onReuse = { [weak self] in
+            self?.releaseCellForReuse()
+        }
         delegate.didRequestImage()
         return cell!
     }
@@ -46,7 +49,13 @@ extension FeedImageCellController: UITableViewDataSource, UITableViewDelegate, U
     }
     
     public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        self.cell = nil
         cancelLoad()
+    }
+    
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        self.cell = cell as? FeedImageCell
+        delegate.didRequestImage()
     }
     
     public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
