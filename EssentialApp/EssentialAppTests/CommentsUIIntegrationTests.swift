@@ -109,14 +109,14 @@ final class CommentsUIIntegrationTests: FeedUIIntegrationTests {
         XCTAssertEqual(sut.errorMessage, nil, "Expect no error messages after user initiated reload")
     }
     
-    override func test_errprView_dismissErrorMessageOnTap() {
+    func test_errorView_dismissErrorMessageOnTap() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
         XCTAssertEqual(sut.errorMessage, nil, "Expect no error messages on load")
         
         loader.completeCommentsLoadingWithError(at: 0)
-        XCTAssertEqual(sut.errorMessage, loadError, "Expect feed load error message on load failure")
+        XCTAssertEqual(sut.errorMessage, loadError, "Expect comments load error message on load failure")
 
         sut.simulateTapOnErrorMessage()
         XCTAssertEqual(sut.errorMessage, nil, "Expect no error messages after user tapped on error message")
