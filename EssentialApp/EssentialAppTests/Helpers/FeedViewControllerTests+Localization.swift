@@ -18,3 +18,11 @@ extension FeedUIIntegrationTests {
         Localized.Feed.title
     }
 }
+
+extension FeedUIIntegrationTests {
+    
+    var commentsTitle: String {
+        Localized.ImageComments.title
+    }
+
+}
