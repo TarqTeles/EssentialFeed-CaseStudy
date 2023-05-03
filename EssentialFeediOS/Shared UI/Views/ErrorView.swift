@@ -9,9 +9,11 @@ import UIKit
 
 public final class ErrorView: UIButton {
     public var message: String? {
-        get { return isVisible ? title(for: .normal) : nil }
+        get { return isVisible ? configuration?.title : nil }
+        set { setMessageAnimated(newValue) }
     }
-    
+
+
     public var onHide: (() -> Void)?
 
     public override init(frame: CGRect) {
@@ -50,8 +52,18 @@ public final class ErrorView: UIButton {
         return alpha > 0
     }
 
-    func show(message: String) {
-        setTitle(message, for: .normal)
+    private func setMessageAnimated(_ message: String?) {
+        if let message = message {
+            showAnimated(message)
+        } else {
+            hideMessageAnimated()
+        }
+    }
+
+    private func showAnimated(_ message: String) {
+        configuration?.attributedTitle = AttributedString(message, attributes: titleAttributes)
+
+        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
 
         UIView.animate(withDuration: 0.25) {
             self.alpha = 1
@@ -70,9 +82,9 @@ public final class ErrorView: UIButton {
     }
     
     private func hideMessage() {
-        setTitle(nil, for: .normal)
-        self.alpha = 0
-        largeContentImageInsets = .init(top: -2.5, left: 8, bottom: -2.5, right: 8)
+        alpha = 0
+        configuration?.attributedTitle = nil
+        configuration?.contentInsets = .zero
         onHide?()
     }
 }

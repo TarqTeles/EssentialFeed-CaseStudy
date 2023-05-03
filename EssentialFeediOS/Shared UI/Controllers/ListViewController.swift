@@ -62,11 +62,7 @@ public class ListViewController: UITableViewController, UITableViewDataSourcePre
     }
     
     public func display(_ viewModel: ResourceErrorViewModel) {
-        if let errorMessage = viewModel.message {
-            errorView.show(message: errorMessage)
-        } else {
-            errorView.hideMessageAnimated()
-        }
+        errorView.message = viewModel.message
     }
 
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
