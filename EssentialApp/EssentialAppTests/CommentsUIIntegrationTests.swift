@@ -123,7 +123,7 @@ final class CommentsUIIntegrationTests: FeedUIIntegrationTests {
     }
     
     
-    override func test_feedLoadCompletion_dispatchesFromBackgroundToMainThread() {
+    func test_commentsLoadCompletion_dispatchesFromBackgroundToMainThread() {
         let (sut, loader) = makeSUT()
         sut.loadViewIfNeeded()
         
