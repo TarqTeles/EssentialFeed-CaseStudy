@@ -9,7 +9,7 @@ import UIKit
 import EssentialFeediOS
 
 extension ListViewController {
-    func simulateUserInitiatedFeedReload() {
+    func simulateUserInitiatedReload() {
         refreshControl?.simulatePullToRefresh()
     }
     
