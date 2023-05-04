@@ -69,27 +69,45 @@ extension ListViewController {
         delegate?.tableView?(tableView, didSelectRowAt: index)
     }
     
-    func numberOfRenderedFeedImageViews() -> Int {
-        tableView.numberOfSections == 0 ? 0 :
-        tableView.numberOfRows(inSection: feedImageSection)
+    func simulateLoadMoreFeedAction() {
+        guard let view = loadMoreCell() else { return }
+        
+        let delegate = tableView.delegate
+        let index = IndexPath(row: 0, section: feedLoadMoreSection)
+        delegate?.tableView?(tableView, willDisplay: view, forRowAt: index)
     }
     
     func renderedFeedImageData(at index: Int) -> Data? {
         return simulateFeedImageViewVisible(at: index)?.renderedImage
     }
     
+    func numberOfRenderedFeedImageViews() -> Int {
+        tableView.numberOfSections == 0 ? 0 :
+        tableView.numberOfRows(inSection: feedImageSection)
+    }
+    
     func feedImageView(at row: Int) -> UITableViewCell? {
         guard numberOfRenderedFeedImageViews() > row else {
             return nil
         }
+
+        return cell(row: row, section: feedImageSection)
+    }
+    
+    func loadMoreCell() -> UITableViewCell? {
+        guard tableView.numberOfSections > 1 else { return nil }
+        
+        return cell(row: 0, section: feedLoadMoreSection)
+    }
+    
+    private func cell(row: Int, section: Int) -> UITableViewCell? {
         let ds = tableView.dataSource
-        let index = IndexPath(row: row, section: feedImageSection)
+        let index = IndexPath(row: row, section: section)
         return ds?.tableView(tableView, cellForRowAt: index)
     }
     
-    var feedImageSection: Int {
-        return 0
-    }
+    private var feedImageSection: Int { 0 }
+    private var feedLoadMoreSection: Int { 1 }
 }
 
 extension ListViewController {
@@ -124,8 +142,6 @@ extension ListViewController {
         return cell?.dateLabel.text
     }
     
-    var commentsSection: Int {
-        return 0
-    }
+    var commentsSection: Int { 0 }
 }
 
