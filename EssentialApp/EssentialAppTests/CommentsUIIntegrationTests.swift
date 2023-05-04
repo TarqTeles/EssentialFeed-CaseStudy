@@ -169,7 +169,7 @@ final class CommentsUIIntegrationTests: XCTestCase {
         return (sut, loader)
     }
     
-    private func makeComment(message: String = "any message", username: String = "any username", url: URL = URL(string: "https://any-url.com")!) -> ImageComment {
+    private func makeComment(message: String = "any message", username: String = "any username") -> ImageComment {
         return ImageComment(id: UUID(), message: message, createdAt: Date(), username: username)
     }
     
@@ -190,13 +190,9 @@ final class CommentsUIIntegrationTests: XCTestCase {
             XCTAssertEqual(sut.commentDate(at: index), comment.date, "Username at index \(index)", file: file, line: line)
         }
         
-        executeRunLoopToCleanUpReferences()
+        ListViewController.executeRunLoopToCleanUpReferences()
     }
     
-    private func executeRunLoopToCleanUpReferences() {
-        RunLoop.current.run(until: Date())
-    }
-
     private class LoaderSpy {
         private var request = [PassthroughSubject<[ImageComment], Error>]()
         var loadCommentsCallCount: Int { request.count }

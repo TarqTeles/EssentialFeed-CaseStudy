@@ -24,6 +24,10 @@ extension ListViewController {
     var isShowingLoadingIndicator: Bool {
         return refreshControl?.isRefreshing == true
     }
+    
+    static func executeRunLoopToCleanUpReferences() {
+        RunLoop.current.run(until: Date())
+    }
 }
 
 extension ListViewController {
