@@ -25,14 +25,25 @@ public extension HTTPClient {
     }
 }
 
+public extension Paginated {
+    var loadMorePublisher: (() -> AnyPublisher<Self, Error>)? {
+        guard let loadMore = self.loadMore else { return nil }
+        
+        return {
+            Deferred {
+                Future(loadMore)
+            }.eraseToAnyPublisher()
+        }
+    }
+}
+
 public extension LocalFeedLoader {
     typealias Publisher = AnyPublisher<[FeedImage], Error>
     
     func loadPublisher() -> Publisher {
         return Deferred {
             Future(self.load)
-        }
-        .eraseToAnyPublisher()
+        }.eraseToAnyPublisher()
     }
 }
 
