@@ -95,13 +95,11 @@ extension ListViewController {
     }
     
     var isShowingLoadMoreIndicator: Bool {
-        let view = loadMoreCell() as? LoadMoreCell
-        return view?.isLoading == true
+        return (loadMoreCell() as? LoadMoreCell)?.isLoading == true
     }
     
-    var loadMoreMessage: String? {
-        let view = loadMoreCell() as? LoadMoreCell
-        return view?.message
+    var loadMoreFeedErrorMessage: String? {
+        return (loadMoreCell() as? LoadMoreCell)?.message
     }
     
     func loadMoreCell() -> UITableViewCell? {

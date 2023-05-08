@@ -104,7 +104,7 @@ class FeedUIIntegrationTests: XCTestCase {
         XCTAssertFalse(sut.isShowingLoadMoreIndicator, "Expected no load more indicator to be showing during initial load")
         
         sut.loadViewIfNeeded()
-        loader.completeFeedLoading(at: 0)
+        loader.completeFeedLoading(with: [image0], at: 0)
         XCTAssertFalse(sut.isShowingLoadMoreIndicator, "Expected no load more indicator once loading completes successfully")
         
         sut.simulateLoadMoreFeedAction()
@@ -199,9 +199,25 @@ class FeedUIIntegrationTests: XCTestCase {
         
         loader.completeFeedLoadingWithError(at: 0)
         XCTAssertEqual(sut.errorMessage, loadError, "Expect feed load error message on load failure")
-
+        
         sut.simulateTapOnErrorMessage()
         XCTAssertEqual(sut.errorMessage, nil, "Expect no error messages after user tapped on error message")
+    }
+    
+    func test_loadMoreCompletion_rendersErrorMessageOnError() {
+        let (sut, loader) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        loader.completeFeedLoading()
+        
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertEqual(sut.loadMoreFeedErrorMessage, nil, "Expect no error messages on load more action")
+        
+        loader.completeLoadMoreWithError(at: 0)
+        XCTAssertEqual(sut.loadMoreFeedErrorMessage, loadError, "Expect feed load error message on load more failure")
+        
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertEqual(sut.loadMoreFeedErrorMessage, nil, "Expect no error messages after new load more action")
     }
     
     func test_feedImageView_loadsImageURLWhenVisible() {
