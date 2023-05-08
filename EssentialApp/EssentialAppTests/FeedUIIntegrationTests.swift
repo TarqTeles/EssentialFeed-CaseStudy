@@ -220,6 +220,23 @@ class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(sut.loadMoreFeedErrorMessage, nil, "Expect no error messages after new load more action")
     }
     
+    func test_tapOnLoadMoreErrorView_loadsMore() {
+        let (sut, loader) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        loader.completeFeedLoading()
+        
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertEqual(loader.loadMoreCallCount, 1, "Expect one call count on initial load more action")
+
+        sut.simulateTapOnLoadMoreFeedErrorMessage()
+        XCTAssertEqual(loader.loadMoreCallCount, 1, "Expect no additional call count because there is no error message to tap yet")
+
+        loader.completeLoadMoreWithError(at: 0)
+        sut.simulateTapOnLoadMoreFeedErrorMessage()
+        XCTAssertEqual(loader.loadMoreCallCount, 2, "Expect one additional call count on tapping load more error")
+    }
+    
     func test_feedImageView_loadsImageURLWhenVisible() {
         let image0 = makeImage(url: URL(string: "https://url-0.com")!)
         let image1 = makeImage(url: URL(string: "https://url-1.com")!)
