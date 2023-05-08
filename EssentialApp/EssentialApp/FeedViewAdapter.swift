@@ -60,8 +60,7 @@ final class FeedViewAdapter: ResourceView {
         loadMoreAdapter.presenter = LoadResourcePresenter(
             resourceView: self,
             loadingView: WeakRefVirtualProxy(loadMore),
-            errorView: WeakRefVirtualProxy(loadMore),
-            mapper: { $0 })
+            errorView: WeakRefVirtualProxy(loadMore))
         
         let loadMoreSection = [CellController(id: UUID(), loadMore)]
         

@@ -28,8 +28,7 @@ public final class FeedUIComposer {
                                                                             loader: imageLoader,
                                                                             selection: selection),
                                               loadingView: WeakRefVirtualProxy(feedController),
-                                              errorView: WeakRefVirtualProxy(feedController),
-                                              mapper: { $0 })
+                                              errorView: WeakRefVirtualProxy(feedController))
         
         presentationAdapter.presenter = presenter
         return feedController
