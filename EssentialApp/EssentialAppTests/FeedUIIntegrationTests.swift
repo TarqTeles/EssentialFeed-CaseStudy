@@ -191,7 +191,7 @@ class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(sut.errorMessage, nil, "Expect no error messages after user initiated reload")
     }
     
-    func test_errprView_dismissErrorMessageOnTap() {
+    func test_errorView_dismissErrorMessageOnTap() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
