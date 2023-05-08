@@ -5,6 +5,7 @@
 //  Created by Tarquinio Teles on 25/11/22.
 //
 
+import UIKit
 import XCTest
 import EssentialApp
 import EssentialFeed
@@ -92,6 +93,31 @@ class FeedUIIntegrationTests: XCTestCase {
         
         loader.completeFeedLoadingWithError(at: 1)
         XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once user-initiated request completes with error")
+    }
+    
+    func test_loadMoreIndicator_isVisibleWhileLoadingMore() {
+        let image0 = makeImage(description: "a description", location: "a location")
+        let image1 = makeImage(description: nil, location: "a location")
+        let (sut, loader) = makeSUT()
+
+        sut.loadViewIfNeeded()
+        XCTAssertFalse(sut.isShowingLoadMoreIndicator, "Expected no load more indicator to be showing during initial load")
+        
+        sut.loadViewIfNeeded()
+        loader.completeFeedLoading(at: 0)
+        XCTAssertFalse(sut.isShowingLoadMoreIndicator, "Expected no load more indicator once loading completes successfully")
+        
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertTrue(sut.isShowingLoadMoreIndicator, "Expected load more indicator to show up on load more action")
+        
+        loader.completeLoadMore(with: [image0, image1], at: 0)
+        XCTAssertFalse(sut.isShowingLoadMoreIndicator, "Expected no load more indicator once load more request completes")
+        
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertTrue(sut.isShowingLoadMoreIndicator, "Expected load more indicator to show up again on second load more action")
+        
+        loader.completeLoadMoreWithError(at: 1)
+        XCTAssertFalse(sut.isShowingLoadMoreIndicator, "Expected no load more indicator once second load more request completes with error")
     }
     
     func test_loadFeedCompletion_rendersSuccessfullyLoadedFeed() {

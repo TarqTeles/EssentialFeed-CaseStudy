@@ -94,6 +94,16 @@ extension ListViewController {
         return cell(row: row, section: feedImageSection)
     }
     
+    var isShowingLoadMoreIndicator: Bool {
+        let view = loadMoreCell() as? LoadMoreCell
+        return view?.isLoading == true
+    }
+    
+    var loadMoreMessage: String? {
+        let view = loadMoreCell() as? LoadMoreCell
+        return view?.message
+    }
+    
     func loadMoreCell() -> UITableViewCell? {
         guard tableView.numberOfSections > 1 else { return nil }
         
