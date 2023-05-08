@@ -9,7 +9,7 @@
          <BreakpointContent
             uuid = "992B4078-A476-47D7-B1AC-4F5673339F9E"
             shouldBeEnabled = "Yes"
-            ignoreCount = "0"
+            ignoreCount = "1"
             continueAfterRunningActions = "No"
             breakpointStackSelectionBehavior = "1"
             type = "65535">
