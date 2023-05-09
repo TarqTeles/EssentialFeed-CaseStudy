@@ -67,7 +67,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func showComments(_ image: FeedImage) {
-        let url = baseURL.appending(path: "v1/image/\(image.id.uuidString)/comments")
+        let url = ImageCommentEndpoint.get(image.id).url(baseURL: baseURL)
         let view = CommentsUIComposer.commentsComposedWith(commentsLoader: makeCommentsLoader(url: url))
         
         navigationController.pushViewController(view, animated: true)
