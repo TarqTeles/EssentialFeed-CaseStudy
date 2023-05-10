@@ -26,21 +26,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         )
     }()
     
-    private lazy var navigationController = UINavigationController(rootViewController: FeedUIComposer.feedComposedWith(
-        feedLoader: makeRemoteFeedLoaderWithLocalFallback,
-        imageLoader: makeLocalImageLoaderWithRemoteFallback,
-        selection: showComments))
+    private lazy var navigationController = UINavigationController(
+        rootViewController: FeedUIComposer.feedComposedWith(
+            feedLoader: makeRemoteFeedLoaderWithLocalFallback,
+            imageLoader: makeLocalImageLoaderWithRemoteFallback,
+            selection: showComments)
+    )
     
-    private let baseURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed")!
+    private lazy var baseURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed")!
 
     private lazy var localFeedLoader = LocalFeedLoader(store: store, currentDate: Date.init)
     
     private lazy var localImageLoader = LocalFeedImageDataLoader(store: store)
 
-    convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore) {
+    convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore, baseURL: URL) {
         self.init()
         self.httpClient = httpClient
         self.store = store
+        self.baseURL = baseURL
     }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -55,9 +58,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
      
     func configureWindow() {
         window?.rootViewController = navigationController
-        
-        window?.makeKeyAndVisible()
-        
+        window?.makeKeyAndVisible()        
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
@@ -68,14 +69,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func showComments(_ image: FeedImage) {
         let url = ImageCommentEndpoint.get(image.id).url(baseURL: baseURL)
-        let view = CommentsUIComposer.commentsComposedWith(commentsLoader: makeCommentsLoader(url: url))
+        let view = CommentsUIComposer
+            .commentsComposedWith(commentsLoader: makeCommentsLoader(url: url))
         
         navigationController.pushViewController(view, animated: true)
     }
     
     private func makeCommentsLoader(url: URL) -> () -> AnyPublisher<[ImageComment], Error> {
-        return {
-            self.httpClient
+        { [httpClient] in
+            httpClient
                 .getPublisher(url: url)
                 .tryMap(ImageCommentsMapper.map)
                 .eraseToAnyPublisher()
@@ -83,15 +85,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func makeRemoteFeedLoaderWithLocalFallback() -> AnyPublisher<Paginated<FeedImage>, Error> {
-        return httpClient
-            .getPublisher(url: FeedEndpoint.get().url(baseURL: baseURL))
+        let url = FeedEndpoint.get().url(baseURL: baseURL)
+
+        return self.httpClient
+            .getPublisher(url: url)
             .tryMap(FeedItemsMapper.map)
             .caching(to: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
-            .map { feed in
-                Paginated(items: feed)
+            .map { items in
+                return Paginated(items: items,
+                          loadMorePublisher: self.makeRemoteLoadMoreLoader(items: items, last: items.last)
+                )
             }
             .eraseToAnyPublisher()
+    }
+    
+    private func makeRemoteLoadMoreLoader(items: [FeedImage], last: FeedImage?) -> (() -> AnyPublisher<Paginated<FeedImage>, Error>)? {
+        last.map { lastItem in
+            let url = FeedEndpoint.get(after: lastItem).url(baseURL: baseURL)
+            
+            return { [httpClient] in
+                httpClient
+                    .getPublisher(url: url)
+                    .tryMap(FeedItemsMapper.map)
+                    .map { newItems in
+                        let allItems = items + newItems
+                        return Paginated(items: allItems, loadMorePublisher: self.makeRemoteLoadMoreLoader(items: allItems, last: newItems.last))
+                    }.eraseToAnyPublisher()
+            }
+        }
     }
     
     private func makeLocalImageLoaderWithRemoteFallback(url: URL) -> LocalFeedImageDataLoader.Publisher {

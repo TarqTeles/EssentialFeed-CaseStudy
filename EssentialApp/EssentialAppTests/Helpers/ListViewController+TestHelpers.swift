@@ -70,7 +70,7 @@ extension ListViewController {
     }
     
     func simulateLoadMoreFeedAction() {
-        guard let view = loadMoreCell() else { return }
+        guard let view = cell(row: 0, section: feedLoadMoreSection) else { return }
         
         let delegate = tableView.delegate
         let index = IndexPath(row: 0, section: feedLoadMoreSection)
@@ -94,6 +94,10 @@ extension ListViewController {
         tableView.numberOfRows(inSection: feedImageSection)
     }
     
+    var canLoadMoreFeed: Bool {
+        return loadMoreCell() != nil
+    }
+    
     func feedImageView(at row: Int) -> UITableViewCell? {
         guard numberOfRenderedFeedImageViews() > row else {
             return nil
@@ -103,20 +107,20 @@ extension ListViewController {
     }
     
     var isShowingLoadMoreIndicator: Bool {
-        return (loadMoreCell() as? LoadMoreCell)?.isLoading == true
+        return loadMoreCell()?.isLoading == true
     }
     
     var loadMoreFeedErrorMessage: String? {
-        return (loadMoreCell() as? LoadMoreCell)?.message
+        return loadMoreCell()?.message
     }
     
-    func loadMoreCell() -> UITableViewCell? {
-        guard tableView.numberOfSections > 1 else { return nil }
-        
-        return cell(row: 0, section: feedLoadMoreSection)
+    func loadMoreCell() -> LoadMoreCell? {
+        return cell(row: 0, section: feedLoadMoreSection) as? LoadMoreCell
     }
     
     private func cell(row: Int, section: Int) -> UITableViewCell? {
+        guard tableView.numberOfSections > section else { return nil }
+        
         let ds = tableView.dataSource
         let index = IndexPath(row: row, section: section)
         return ds?.tableView(tableView, cellForRowAt: index)
