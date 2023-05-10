@@ -61,6 +61,7 @@ public class ListViewController: UITableViewController, UITableViewDataSourcePre
             snapshot.appendSections([section])
             snapshot.appendItems(cellControllers, toSection: section)
         }
+        
         dataSource.apply(snapshot)
     }
     

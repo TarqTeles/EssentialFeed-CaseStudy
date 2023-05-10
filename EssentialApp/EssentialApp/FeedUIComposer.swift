@@ -31,6 +31,7 @@ public final class FeedUIComposer {
                                               errorView: WeakRefVirtualProxy(feedController))
         
         presentationAdapter.presenter = presenter
+        
         return feedController
     }
     

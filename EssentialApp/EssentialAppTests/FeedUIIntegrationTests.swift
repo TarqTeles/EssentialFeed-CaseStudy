@@ -84,7 +84,6 @@ class FeedUIIntegrationTests: XCTestCase {
         sut.loadViewIfNeeded()
         XCTAssertTrue(sut.isShowingLoadingIndicator, "Expected loading indicator to be showing once view is loaded and initiates a request")
         
-        sut.loadViewIfNeeded()
         loader.completeFeedLoading(at: 0)
         XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once loading completes successfully")
         
@@ -103,7 +102,6 @@ class FeedUIIntegrationTests: XCTestCase {
         sut.loadViewIfNeeded()
         XCTAssertFalse(sut.isShowingLoadMoreIndicator, "Expected no load more indicator to be showing during initial load")
         
-        sut.loadViewIfNeeded()
         loader.completeFeedLoading(with: [image0], at: 0)
         XCTAssertFalse(sut.isShowingLoadMoreIndicator, "Expected no load more indicator once loading completes successfully")
         
