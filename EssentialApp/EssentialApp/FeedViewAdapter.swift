@@ -27,7 +27,7 @@ final class FeedViewAdapter: ResourceView {
     }
     
     func display(_ viewModel: Paginated<FeedImage>) {
-        let feed = viewModel.items.map { model in
+        let feed: [CellController] = viewModel.items.map { model in
             let adapter = ImageDataPresentationAdapter(loader: { [imageLoader] in
                 imageLoader(model.url)
             })
@@ -48,7 +48,7 @@ final class FeedViewAdapter: ResourceView {
             
             return CellController(id: model, view)
         }
-        
+                
         guard let loadMorePublisher = viewModel.loadMorePublisher else {
             controller?.display(feed)
             return
