@@ -102,6 +102,11 @@ public class ListViewController: UITableViewController, UITableViewDataSourcePre
         }
     }
     
+    public override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let dl = cellController(at: IndexPath(row: 0, section: loadMoreSection))?.delegate
+        dl?.scrollViewDidScroll?(scrollView)
+    }
+    
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -112,5 +117,6 @@ public class ListViewController: UITableViewController, UITableViewDataSourcePre
         dataSource.itemIdentifier(for: indexPath)
     }
     
+    private var loadMoreSection: Int { 1 }
 }
 

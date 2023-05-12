@@ -12,6 +12,7 @@ public final class LoadMoreCellController: NSObject, UITableViewDataSource, UITa
     private let cell = LoadMoreCell()
     private let callback: () -> Void
     private var offsetObserver: NSKeyValueObservation?
+    private var initialDraggingY: CGFloat?
     
     public init(callback: @escaping () -> Void) {
         self.callback = callback
@@ -32,7 +33,11 @@ public final class LoadMoreCellController: NSObject, UITableViewDataSource, UITa
         offsetObserver = tableView.observe(\.contentOffset, options: .new, changeHandler: { [weak self] (tableView, value) in
             guard tableView.isDragging else { return }
 
-            self?.reloadIfNeeded()
+            self?.setInitialDraggingY(to: value.newValue?.y)
+            
+            if self?.enoughDragging(value.newValue?.y) == true {
+                self?.reloadIfNeeded()
+            }
         })
     }
         
@@ -44,10 +49,31 @@ public final class LoadMoreCellController: NSObject, UITableViewDataSource, UITa
         reloadIfNeeded()
     }
     
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard cell.message == nil else { return }
+
+        if scrollView.contentOffset.y + cell.frame.height >= scrollView.contentSize.height - (scrollView.frame.height * 1.5) {
+            reloadIfNeeded()
+        }
+    }
+    
     private func reloadIfNeeded() {
         guard !self.cell.isLoading else { return }
-        
+
         callback()
+    }
+    
+    private func setInitialDraggingY(to currentY: CGFloat?) {
+        guard initialDraggingY == nil else { return }
+        
+        self.initialDraggingY = currentY
+    }
+    
+    private func enoughDragging(_ currentY: CGFloat?) -> Bool {
+        guard let initY = initialDraggingY, let currY = currentY else { return false }
+        
+        let draggedDistance = (currY - initY)
+        return draggedDistance > 135.0
     }
     
 }
