@@ -11,6 +11,8 @@ import Combine
 import EssentialFeed
 import EssentialFeediOS
 
+
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
@@ -20,10 +22,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }()
     
     lazy var store: FeedStore & FeedImageDataStore = {
-        try! CoreDataFeedStore(storeURL: NSPersistentContainer
-            .defaultDirectoryURL()
-            .appendingPathComponent("feed-store.sqlite")
-        )
+        do {
+            return try CoreDataFeedStore(
+                storeURL: NSPersistentContainer
+                    .defaultDirectoryURL()
+                    .appendingPathComponent("feed-store.sqlite")
+            )
+        } catch {
+            return NullStore()
+        }
     }()
     
     private lazy var navigationController = UINavigationController(
