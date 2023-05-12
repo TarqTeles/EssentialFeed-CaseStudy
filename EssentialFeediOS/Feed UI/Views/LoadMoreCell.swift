@@ -36,7 +36,8 @@ public final class LoadMoreCell: UITableViewCell {
             label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             contentView.trailingAnchor.constraint(equalTo: label.trailingAnchor, constant: 8),
             label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            contentView.bottomAnchor.constraint(equalTo: label.bottomAnchor, constant: 8)
+            contentView.bottomAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
+            contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
         ])
         return label
     }()
