@@ -32,6 +32,7 @@ extension FeedUIIntegrationTests {
                 items: feed, 
                 loadMorePublisher: loadMorePublisher(lastPage: false))
             )
+            feedRequests[index].send(completion: .finished)
         }
         
         func completeFeedLoadingWithError(at index: Int = 0) {
@@ -46,6 +47,7 @@ extension FeedUIIntegrationTests {
                 items: feed,
                 loadMorePublisher: loadMorePublisher(lastPage: lastPage))
             )
+            loadMoreRequests[index].send(completion: .finished)
         }
         
         func completeLoadMoreWithError(at index: Int = 0) {

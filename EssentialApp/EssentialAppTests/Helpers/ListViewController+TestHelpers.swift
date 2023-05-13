@@ -76,6 +76,7 @@ extension ListViewController {
     }
     
     func simulateLoadMoreFeedAction() {
+        RunLoop.main.run(until: Date())
         guard let view = cell(row: 0, section: feedLoadMoreSection) else { return }
         
         let delegate = tableView.delegate
@@ -92,7 +93,12 @@ extension ListViewController {
     }
     
     func renderedFeedImageData(at index: Int) -> Data? {
+        RunLoop.main.run(until: Date())
         return simulateFeedImageViewVisible(at: index)?.renderedImage
+    }
+    
+    func isLoadingFeedImageData(at index: Int) -> Bool? {
+        return (feedImageView(at: index) as? FeedImageCell)?.isShowingRetryAction
     }
     
     func numberOfRenderedFeedImageViews() -> Int {
