@@ -7,7 +7,7 @@
 
 import EssentialFeed
 
-class InMemoryFeedStore: FeedStore, FeedImageDataStore {
+class InMemoryFeedStore: FeedStore {
     private(set) var feedCache: CachedFeed?
     private var feedImageDataCache: [URL: Data] = [:]
     
@@ -28,19 +28,20 @@ class InMemoryFeedStore: FeedStore, FeedImageDataStore {
     func retrieve(completion: @escaping FeedStore.RetrievalCompletion) {
         completion(.success(feedCache))
     }
-    
-    func insert(_ data: Data, for url: URL, completion: @escaping (FeedImageDataStore.InsertionResult) -> Void) {
-        feedImageDataCache[url] = data
-        completion(.success(()))
-    }
-    
-    func retrieve(dataForURL url: URL, completion: @escaping (FeedImageDataStore.RetrievalResult) -> Void) {
-        completion(.success(feedImageDataCache[url]))
-    }
+}
 
-    static var empty: InMemoryFeedStore {
-        InMemoryFeedStore()
+extension InMemoryFeedStore: FeedImageDataStore {
+    func insert(_ data: Data, for url: URL) throws {
+        feedImageDataCache[url] = data
     }
+    
+    func retrieve(dataForURL url: URL) throws -> Data? {
+        feedImageDataCache[url]
+    }
+}
+
+extension InMemoryFeedStore {
+    static var empty: InMemoryFeedStore { InMemoryFeedStore() }
     
     static var withExpiredFeedCache: InMemoryFeedStore {
         InMemoryFeedStore(feedCache: CachedFeed(feed: [], timestamp: Date.distantPast))
