@@ -189,7 +189,6 @@ class FeedUIIntegrationTests: XCTestCase {
     
     func test_loadMoreIndicator_isVisibleWhileLoadingMore() {
         let image0 = makeImage(description: "a description", location: "a location")
-        let image1 = makeImage(description: nil, location: "a location")
         let (sut, loader) = makeSUT()
 
         sut.loadViewIfNeeded()
@@ -201,7 +200,7 @@ class FeedUIIntegrationTests: XCTestCase {
         sut.simulateLoadMoreFeedAction()
         XCTAssertTrue(sut.isShowingLoadMoreIndicator, "Expected load more indicator to show up on load more action")
         
-        loader.completeLoadMore(with: [image0, image1], at: 0)
+        loader.completeLoadMore(with: [image0], at: 0)
         XCTAssertFalse(sut.isShowingLoadMoreIndicator, "Expected no load more indicator once load more request completes")
         
         sut.simulateLoadMoreFeedAction()
