@@ -76,12 +76,12 @@ extension ListViewController {
     }
     
     func simulateLoadMoreFeedAction() {
-        RunLoop.main.run(until: Date())
         guard let view = cell(row: 0, section: feedLoadMoreSection) else { return }
         
         let delegate = tableView.delegate
         let index = IndexPath(row: 0, section: feedLoadMoreSection)
         delegate?.tableView?(tableView, willDisplay: view, forRowAt: index)
+        ListViewController.executeRunLoopToCleanUpReferences()
     }
     
     func simulateTapOnLoadMoreFeedErrorMessage() {
@@ -93,7 +93,7 @@ extension ListViewController {
     }
     
     func renderedFeedImageData(at index: Int) -> Data? {
-        RunLoop.main.run(until: Date())
+        ListViewController.executeRunLoopToCleanUpReferences()
         return simulateFeedImageViewVisible(at: index)?.renderedImage
     }
     
@@ -119,6 +119,7 @@ extension ListViewController {
     }
     
     var isShowingLoadMoreIndicator: Bool {
+        ListViewController.executeRunLoopToCleanUpReferences()
         return loadMoreCell()?.isLoading == true
     }
     
