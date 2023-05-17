@@ -1,5 +1,6 @@
-# Essential Feed App – Image Feed Feature
-[![Build Status](https://travis-ci.com/essentialdevelopercom/essential-feed-case-study.svg?branch=master)](https://travis-ci.com/essentialdevelopercom/essential-feed-case-study)
+# Essential Feed App – Case Study
+[![CI-iOS](https://github.com/TarqTeles/EssentialFeed/actions/workflows/CI-iOS.yml/badge.svg)](https://github.com/TarqTeles/EssentialFeed/actions/workflows/CI-iOS.yml)
+[![CI-macOS](https://github.com/TarqTeles/EssentialFeed/actions/workflows/CI-macOS.yml/badge.svg)](https://github.com/TarqTeles/EssentialFeed/actions/workflows/CI-macOS.yml)
 ## BDD Specs
 ### Story: Customer requests to see their image feed
 ### Narrative #1
