@@ -81,6 +81,7 @@ extension ListViewController {
         let delegate = tableView.delegate
         let index = IndexPath(row: 0, section: feedLoadMoreSection)
         delegate?.tableView?(tableView, willDisplay: view, forRowAt: index)
+        ListViewController.executeRunLoopToCleanUpReferences()
     }
     
     func simulateTapOnLoadMoreFeedErrorMessage() {
@@ -92,7 +93,12 @@ extension ListViewController {
     }
     
     func renderedFeedImageData(at index: Int) -> Data? {
+        ListViewController.executeRunLoopToCleanUpReferences()
         return simulateFeedImageViewVisible(at: index)?.renderedImage
+    }
+    
+    func isLoadingFeedImageData(at index: Int) -> Bool? {
+        return (feedImageView(at: index) as? FeedImageCell)?.isShowingRetryAction
     }
     
     func numberOfRenderedFeedImageViews() -> Int {
@@ -113,6 +119,7 @@ extension ListViewController {
     }
     
     var isShowingLoadMoreIndicator: Bool {
+        ListViewController.executeRunLoopToCleanUpReferences()
         return loadMoreCell()?.isLoading == true
     }
     

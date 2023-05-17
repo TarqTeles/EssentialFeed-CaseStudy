@@ -11,9 +11,10 @@ import EssentialFeediOS
 @testable import EssentialApp
 
 final class FeedAcceptanceTests: XCTestCase {
-
+    
     func test_onLaunch_displayRemoteFeedWhenCustomerHasConnectivity() {
         let feed = launch(httpClient: .online(response), store: .empty)
+        feed.loadViewIfNeeded()
         
         XCTAssertEqual(feed.numberOfRenderedFeedImageViews(), 2)
         XCTAssertEqual(feed.renderedFeedImageData(at: 0), makeImageData0())
@@ -60,18 +61,18 @@ final class FeedAcceptanceTests: XCTestCase {
     
     func test_onEnteringBackgroud_deleteExpiredCache() {
         let store = InMemoryFeedStore.withExpiredFeedCache
-
-         enterBackground(with: store)
-
-         XCTAssertNil(store.feedCache, "Expected to delete expired cache")
+        
+        enterBackground(with: store)
+        
+        XCTAssertNil(store.feedCache, "Expected to delete expired cache")
     }
-
+    
     func test_onEnteringBackgroud_doesNotDeleteNonExpiredCache() {
         let store = InMemoryFeedStore.withNonExpiredFeedCache
-
-         enterBackground(with: store)
-
-         XCTAssertNotNil(store.feedCache, "Expected non-expired cache to be kept")
+        
+        enterBackground(with: store)
+        
+        XCTAssertNotNil(store.feedCache, "Expected non-expired cache to be kept")
     }
     
     func test_onFeedImageSelection_displaysComments() {
@@ -80,14 +81,18 @@ final class FeedAcceptanceTests: XCTestCase {
         XCTAssertEqual(comments.numberOfRenderedComments(), 1)
         XCTAssertEqual(comments.commentMessage(at: 0), aCommentMessage)
     }
-
+    
     // MARK: - Helpers
     
     private func launch(
         httpClient: HTTPClientStub = .offline,
         store: InMemoryFeedStore = .empty
     ) -> ListViewController {
-        let sut = SceneDelegate(httpClient: httpClient, store: store, baseURL: fakeBaseURL)
+        let sut = SceneDelegate(httpClient: httpClient,
+                                store: store,
+                                baseURL: fakeBaseURL,
+                                scheduler: .immediateOnMainQueue
+        )
         sut.window = UIWindow()
         sut.configureWindow()
         
@@ -96,15 +101,19 @@ final class FeedAcceptanceTests: XCTestCase {
     }
     
     private func enterBackground(with store: InMemoryFeedStore) {
-        let sut = SceneDelegate(httpClient: HTTPClientStub.offline, store: store, baseURL: fakeBaseURL)
+        let sut = SceneDelegate(httpClient: HTTPClientStub.offline,
+                                store: store,
+                                baseURL: fakeBaseURL,
+                                scheduler: .immediateOnMainQueue
+        )
         sut.sceneWillResignActive(UIApplication.shared.connectedScenes.first!)
     }
     
     private let fakeBaseURL = URL(string: "http://some-url.com/essential-feed/")!
-
+    
     private func showCommentsForFirstImage() -> ListViewController {
         let feed = launch(httpClient: .online(response), store: .empty)
-
+        
         feed.simulateTapOnFeedImage(at: 0)
         ListViewController.executeRunLoopToCleanUpReferences()
         
@@ -113,7 +122,11 @@ final class FeedAcceptanceTests: XCTestCase {
     }
     
     private func response(for url: URL) -> (Data, HTTPURLResponse) {
-        let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
+        let response = HTTPURLResponse(url: url,
+                                       statusCode: 200,
+                                       httpVersion: nil,
+                                       headerFields: nil
+        )!
         return (makeData(for: url), response)
     }
     
@@ -136,7 +149,7 @@ final class FeedAcceptanceTests: XCTestCase {
                 
             case "/essential-feed/v1/image/9ED8D126-337E-43F4-A217-79D898CFE380/comments":
                 return makeCommentData()
-
+                
             default:
                 XCTFail("unrecognized url \(url)")
                 return Data("invalid utl".utf8)
@@ -164,17 +177,18 @@ final class FeedAcceptanceTests: XCTestCase {
         return try! JSONSerialization.data(withJSONObject: ["items": [Any]()])
     }
     
+    private var aCommentMessage: String { "a message" }
+    
     private func makeCommentData() -> Data {
         return try! JSONSerialization.data(withJSONObject: ["items": [
             ["id": UUID().uuidString,
              "message": aCommentMessage,
              "created_at": "2023-02-28T15:07:02+00:00",
              "author" : [
-                 "username" : "a username"
-                 ]
+                "username" : "a username"
+             ]
             ] as [String : Any]
         ]])
     }
-    
-    private var aCommentMessage: String { "a message" }
+
 }
