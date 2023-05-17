@@ -73,7 +73,6 @@ public final class LoadMoreCellController: NSObject, UITableViewDataSource, UITa
         guard let initY = initialDraggingY, let currY = currentY else { return false }
         
         let draggedDistance = (currY - initY)
-
         return draggedDistance > reasonableDistance
     }
     
