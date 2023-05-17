@@ -59,7 +59,6 @@ public final class LoadMoreCellController: NSObject, UITableViewDataSource, UITa
     
     private func reloadIfNeeded() {
         guard !self.cell.isLoading else { return }
-        guard cell.message == nil else { return }
 
         callback()
     }
