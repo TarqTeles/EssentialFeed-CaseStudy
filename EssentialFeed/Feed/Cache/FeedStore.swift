@@ -85,8 +85,10 @@ extension FeedStore {
             result = $0
             group.leave()
         })
+        group.wait()
         switch result {
             case let .success(cache):
+                print("success with \(String(describing: cache?.feed.count)) items")
                 return cache
             case let .failure(error):
                 throw error
