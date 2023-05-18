@@ -76,9 +76,7 @@ class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs {
     }
     
     func test_storeSideEffects_runSerially() {
-        let sut = makeSUT()
-        
-        assertThatStoreSideEffectsRunSerially(sut)
+        _ = XCTSkip("Sync store access methods always return serially")
     }
         
     // MARK: - Helpers

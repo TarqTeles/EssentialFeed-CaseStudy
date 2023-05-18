@@ -18,70 +18,79 @@ public final class LocalFeedLoader {
 }
 
 extension LocalFeedLoader: FeedCache {
+    public func save(feed: [FeedImage]) throws {
+        do {
+            try store.deleteCachedFeed()
+            try store.insert(feed.toLocal(), timestamp: currentDate())
+        } catch {
+            throw error
+        }
+    }
+    
     public typealias SaveResult = Result<Void, Error>
     
+    @available(*, deprecated)
     public func save(feed: [FeedImage], completion: @escaping (SaveResult) -> Void) {
-        store.deleteCachedFeed { [weak self] deletionResult in
-            guard let self = self else { return }
-            
-            switch deletionResult {
-                case .success():
-                    self.cache(feed, with: completion)
-                    
-                case let .failure(error):
-                    completion(.failure(error))
-            }
-        }
+        completion(SaveResult { try save(feed: feed) })
     }
     
-    private func cache(_ feed: [FeedImage], with completion: @escaping (SaveResult) -> Void) {
-        store.insert(feed.toLocal(), timestamp: currentDate()) { [weak self] error in
-            guard self != nil else { return }
-            
-            completion(error)
-        }
-    }
 }
 
 extension LocalFeedLoader {
     public typealias LoadResult = Swift.Result<[FeedImage], Error>
     
-    public func load(completion: @escaping (LoadResult) -> Void) {
-        store.retrieve { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-                case let .failure(error):
-                    completion(.failure(error))
-                    
-                case let .success(.some(cache)) where FeedCachePolicy.validate(cache.timestamp, against: self.currentDate()):
-                    completion(.success(cache.feed.toModels()))
-                    
-                case .success:
-                    completion(.success([]))
+    public func load() throws -> CachedFeed?  {
+        do {
+            if let cache = try store.retrieve(), FeedCachePolicy.validate(cache.timestamp, against: self.currentDate()) {
+                return cache
+            } else {
+                return nil
             }
+        } catch {
+            throw error
         }
+    }
+    
+    @available(*, deprecated)
+    public func load(completion: @escaping (LoadResult) -> Void) {
+        completion( LoadResult { try load()?.feed.toModels() ?? [] })
     }
 }
 
 extension LocalFeedLoader {
     public typealias ValidationResult = Result<Void, Error>
     
-    public func validateCache(completion: @escaping (ValidationResult) -> Void) {
-        store.retrieve { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-                case .failure:
-                    self.store.deleteCachedFeed(completion: completion)
-                    
-                case let .success(.some(cache)) where !FeedCachePolicy.validate(cache.timestamp, against: self.currentDate()):
-                    self.store.deleteCachedFeed(completion: completion)
-                    
-                case .success:
-                    completion(.success(()))
+    public func validateCache() throws {
+        var cache: CachedFeed?
+        var validationError: Error?
+        do {
+            cache = try store.retrieve()
+        } catch {
+            validationError = error
+        }
+        
+        if !isValidCache(cache) || validationError != nil {
+            do {
+                return try store.deleteCachedFeed()
+            } catch {
+                validationError = error
             }
         }
+        
+        if let error = validationError {
+            throw error
+        }
+    }
+    
+    private func isValidCache(_ cache: CachedFeed?) -> Bool {
+        guard let foundCache = cache else { return true }
+                
+        return FeedCachePolicy.validate(foundCache.timestamp, against: self.currentDate())
+    }
+    
+    @available(*, deprecated)
+    public func validateCache(completion: @escaping (ValidationResult) -> Void) {
+        completion(ValidationResult { try validateCache() })
     }
 }
 
