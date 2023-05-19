@@ -94,11 +94,11 @@ extension Publisher {
 
 private extension FeedCache {
     func saveIgnoringResult(feed: [FeedImage]) {
-        self.save(feed: feed) { _ in }
+        try? self.save(feed: feed)
     }
     
     func saveIgnoringResult(page: Paginated<FeedImage>) {
-        self.save(feed: page.items) { _ in }
+        try? self.save(feed: page.items)
     }
 }
 
