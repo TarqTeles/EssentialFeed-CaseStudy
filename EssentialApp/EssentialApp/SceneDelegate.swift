@@ -83,7 +83,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
-        localFeedLoader.validateCache { _ in }
+        do {
+            try localFeedLoader.validateCache()
+        } catch {
+            logger.error("Received \(error.localizedDescription) when validating cache")
+        }
     }
     
     private func showComments(_ image: FeedImage) {

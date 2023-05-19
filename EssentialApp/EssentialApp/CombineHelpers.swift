@@ -60,8 +60,20 @@ public extension LocalFeedLoader {
     
     func loadPublisher() -> Publisher {
         return Deferred {
-            Future(self.load)
+            Future { promise in
+                promise(Result { try self.load()?.feed.toModels() ?? [] })
+            }
         }.eraseToAnyPublisher()
+    }
+}
+
+private extension Array where Element == LocalFeedImage {
+    func toModels() -> [FeedImage] {
+        return map { FeedImage(id: $0.id,
+                               description: $0.description,
+                               location: $0.location,
+                               url: $0.url
+        )}
     }
 }
 
@@ -71,8 +83,8 @@ public extension FeedImageDataLoader {
     func loadImageDataPublisher(from url: URL) -> Publisher {
         
         return Deferred {
-            Future { completion in
-                completion(Result {
+            Future { promise in
+                promise(Result {
                     try self.loadImageData(from: url)
                 })
             }
