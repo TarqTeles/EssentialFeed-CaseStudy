@@ -129,34 +129,24 @@ final class EssentialFeedCacheIntegrationTests: XCTestCase {
     }
     
     private func validateCache(with sut: LocalFeedLoader, file: StaticString = #filePath, line: UInt = #line) {
-        let exp = expectation(description: "Wait for validation completion")
-        sut.validateCache() { result in
-            if case let Result.failure(error) = result {
-                    XCTFail("Expected to vlidate cache successfully, got \(error) instead", file: file, line: line)
-            }
-            exp.fulfill()
+        do {
+            try sut.validateCache()
+        } catch {
+            XCTFail("Expected to vlidate cache successfully, got \(error) instead", file: file, line: line)
         }
-        wait(for: [exp], timeout: 1.0)
     }
     
     private func expect(_ sut: LocalFeedLoader, toLoad expectedFeed: [FeedImage], file: StaticString = #filePath, line: UInt = #line) {
-        let exp = expectation(description: "Wait for load completion")
-        sut.load { result in
-            switch result {
-                case let .success(receivedFeed):
-                    XCTAssertEqual(receivedFeed, expectedFeed, file: file, line: line)
-                    
-                case let .failure(error):
-                    XCTFail("Expected successful load result, got \(error) instead", file: file, line: line)
-            }
-            exp.fulfill()
+        do {
+            let receivedFeed = try sut.load()?.feed.toModels() ?? []
+            XCTAssertEqual(receivedFeed, expectedFeed, file: file, line: line)
+        } catch {
+            XCTFail("Expected successful load result, got \(error) instead", file: file, line: line)
         }
-        
-        wait(for: [exp], timeout: 1.0)
     }
     
     private func save(_ feed: [FeedImage], with sut: LocalFeedLoader, file: StaticString = #filePath, line: UInt = #line) {
-        let saveResult = LocalFeedLoader.SaveResult { try sut.save(feed: feed) }
+        let saveResult = Result<Void, Error> { try sut.save(feed: feed) }
         if case let Result.failure(error) = saveResult {
             XCTFail("Expected to save feed successfully, got \(error) instead", file: file, line: line)
         }
