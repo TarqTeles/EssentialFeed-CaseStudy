@@ -152,11 +152,11 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
         return (sut, store)
     }
     
-    private func expect(_ sut: LocalFeedLoader, toCompleteWith expectedResult: LocalFeedLoader.ValidationResult, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+    private func expect(_ sut: LocalFeedLoader, toCompleteWith expectedResult: Result<Void,Error>, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
         
         action()
         
-        let receivedResult = LocalFeedLoader.ValidationResult { try sut.validateCache() }
+        let receivedResult = Result<Void,Error> { try sut.validateCache() }
         switch (receivedResult, expectedResult) {
             case (.success, .success):
                 break

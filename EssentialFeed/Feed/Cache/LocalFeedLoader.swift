@@ -26,19 +26,9 @@ extension LocalFeedLoader: FeedCache {
             throw error
         }
     }
-    
-    public typealias SaveResult = Result<Void, Error>
-    
-    @available(*, deprecated)
-    public func save(feed: [FeedImage], completion: @escaping (SaveResult) -> Void) {
-        completion(SaveResult { try save(feed: feed) })
-    }
-    
 }
 
 extension LocalFeedLoader {
-    public typealias LoadResult = Swift.Result<[FeedImage], Error>
-    
     public func load() throws -> CachedFeed?  {
         do {
             if let cache = try store.retrieve(), FeedCachePolicy.validate(cache.timestamp, against: self.currentDate()) {
@@ -50,16 +40,9 @@ extension LocalFeedLoader {
             throw error
         }
     }
-    
-    @available(*, deprecated)
-    public func load(completion: @escaping (LoadResult) -> Void) {
-        completion( LoadResult { try load()?.feed.toModels() ?? [] })
-    }
 }
 
 extension LocalFeedLoader {
-    public typealias ValidationResult = Result<Void, Error>
-    
     public func validateCache() throws {
         var cache: CachedFeed?
         var validationError: Error?
@@ -86,11 +69,6 @@ extension LocalFeedLoader {
         guard let foundCache = cache else { return true }
                 
         return FeedCachePolicy.validate(foundCache.timestamp, against: self.currentDate())
-    }
-    
-    @available(*, deprecated)
-    public func validateCache(completion: @escaping (ValidationResult) -> Void) {
-        completion(ValidationResult { try validateCache() })
     }
 }
 

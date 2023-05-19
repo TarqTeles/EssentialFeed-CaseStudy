@@ -9,10 +9,6 @@ import Foundation
 import EssentialFeed
 
 class FeedStoreSpy: FeedStore {
-    private var deletionCompletions = [DeletionCompletion]()
-    private var insertionCompletions = [InsertionCompletion]()
-    private var retrievalCompletions = [RetrievalCompletion]()
-
     enum ReceivedMessage: Equatable {
         case deleteCachedFeed
         case insert([LocalFeedImage], Date)
@@ -30,12 +26,6 @@ class FeedStoreSpy: FeedStore {
         if case let .failure(error) = deletionResult {
             throw error
         }
-    }
-    
-    @available(*, deprecated)
-    func deleteCachedFeed(completion: @escaping DeletionCompletion) {
-        deletionCompletions.append(completion)
-        receivedMessages.append(.deleteCachedFeed)
     }
     
     func completeDeletion(with error: NSError, at index: Int = 0) {
@@ -61,12 +51,6 @@ class FeedStoreSpy: FeedStore {
         }
     }
     
-    @available(*, deprecated)
-   func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
-        insertionCompletions.append(completion)
-        receivedMessages.append(.insert(feed, timestamp))
-    }
-    
     func retrieve() throws -> CachedFeed? {
         receivedMessages.append(.retrieve)
         guard let retrievalResult = self.retrievalResult else { return nil }
@@ -77,12 +61,6 @@ class FeedStoreSpy: FeedStore {
             case let .failure(error):
                 throw error
         }
-    }
-    
-    @available(*, deprecated)
-    func retrieve(completion: @escaping RetrievalCompletion) {
-        retrievalCompletions.append(completion)
-        receivedMessages.append(.retrieve)
     }
     
     func completeRetrieval(with error: NSError, at index: Int = 0) {

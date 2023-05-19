@@ -88,17 +88,13 @@ class CoreDataFeedImageDataStoreTests: XCTestCase {
     }
     
     private func insert(_ data: Data, for url: URL, into sut: CoreDataFeedStore, file: StaticString = #filePath, line: UInt = #line) {
-        let exp = expectation(description: "Witing for store insertion")
         let image = localImage(for: url)
         
-        sut.insert([image], timestamp: Date()) { result in
-            if case let .failure(error) = result {
-                XCTFail("Failed to save image \(image) with error \(error)", file:  file, line: line)
-            }
-            exp.fulfill()
+        do {
+            try sut.insert([image], timestamp: Date())
+        } catch {
+            XCTFail("Failed to save image \(image) with error \(error)", file:  file, line: line)
         }
-        
-        wait(for: [exp], timeout: 1.0)
         
         do {
             try sut.insert(data, for: image.url)
