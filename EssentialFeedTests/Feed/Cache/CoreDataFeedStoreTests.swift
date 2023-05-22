@@ -74,10 +74,6 @@ class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs {
         
         assertThatDeleteDeliversNoErrorOnPreviouslyInsertedCacheDeletion(sut)
     }
-    
-    func test_storeSideEffects_runSerially() {
-        _ = XCTSkip("Sync store access methods always return serially")
-    }
         
     // MARK: - Helpers
     

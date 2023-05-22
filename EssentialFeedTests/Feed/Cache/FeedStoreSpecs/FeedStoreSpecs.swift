@@ -21,8 +21,6 @@ protocol FeedStoreSpecs {
     func test_delete_deliversNoErrorOnEmptyCache()
     func test_delete_emptiesPreviouslyInsertedCache()
     func test_delete_deliversNoErrorOnPreviouslyInsertedCacheDeletion()
-
-    func test_storeSideEffects_runSerially()
 }
 
 protocol FailableRetrieveFeedStoreSpecs: FeedStoreSpecs {
